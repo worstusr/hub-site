@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Login Administrador - Estevan Hub</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-night-950 flex items-center justify-center min-h-screen text-white" style="background: linear-gradient(135deg, #0c4a6e 0%, #0f172a 100%);">
+  <div class="bg-night-900/80 p-10 rounded-3xl shadow-2xl w-full max-w-md border border-lunar-700/30">
+    <h1 class="text-3xl font-bold text-gradient mb-8 text-center">Admin - Estevan Hub</h1>
+    <form id="loginForm" class="space-y-6">
+      <div>
+        <label class="block text-lunar-200 mb-2" for="username">Usuário</label>
+        <input id="username" name="username" type="text" required class="w-full p-3 rounded-xl bg-night-800/70 border border-lunar-700/30 text-lunar-100 focus:outline-none focus:border-lunar-400 placeholder:text-lunar-400 transition-all duration-200">
+      </div>
+      <div>
+        <label class="block text-lunar-200 mb-2" for="password">Senha</label>
+        <input id="password" name="password" type="password" required class="w-full p-3 rounded-xl bg-night-800/70 border border-lunar-700/30 text-lunar-100 focus:outline-none focus:border-lunar-400 placeholder:text-lunar-400 transition-all duration-200">
+      </div>
+      <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold text-lg">Entrar</button>
+      <div id="loginError" class="text-red-400 text-center mt-4 hidden"></div>
+    </form>
+  </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('loginError');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      
+      // Limpar erro anterior
+      errorDiv.classList.add('hidden');
+      
+      // Loading state
+      submitBtn.disabled = true;
+      const originalText = submitBtn.textContent;
+      submitBtn.innerHTML = '<div class="inline-block animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>Entrando...';
+      
+      try {
+        console.log('Tentando fazer login...');
+        console.log('Usuário:', username);
+        
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        });
+        
+        console.log('Status da resposta login:', res.status);
+        
+        if (res.ok) {
+          const data = await res.json();
+          console.log('Dados recebidos:', data);
+          
+          if (data.success && data.token) {
+            // Salvar token
+            localStorage.setItem('admin_token', 'admin_token_123');
+            console.log('Token salvo com sucesso');
+            
+            // Feedback de sucesso
+            submitBtn.innerHTML = '✅ Login realizado!';
+            submitBtn.style.background = 'linear-gradient(90deg, #10b981, #059669)';
+            
+            // Aguardar um pouco antes de redirecionar
+            setTimeout(() => {
+              console.log('Redirecionando para dashboard...');
+              window.location.href = '/admin/dashboard.html';
+            }, 500);
+          } else {
+            throw new Error(data.message || 'Credenciais inválidas');
+          }
+        } else {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.message || `Erro HTTP: ${res.status}`);
+        }
+      } catch (err) {
+        console.error('Erro no login:', err);
+        errorDiv.textContent = err.message;
+        errorDiv.classList.remove('hidden');
+        
+        // Reset button
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Limpar dados de sessão ao carregar a página
+    localStorage.removeItem('admin_token');
+  </script>
+</body>
+</html>

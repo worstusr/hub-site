@@ -1,0 +1,79 @@
+/* Simulator specific styles */
+.simulator {
+    padding: 60px 0;
+}
+
+.simulator h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 32px;
+}
+
+.simulator-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.result-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.result-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.result-card h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.result-card p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.chart-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    height: 400px;
+}
+
+/* Button positioning */
+#calcular {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 18px;
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Dashboard Cliente - Estevan Hub</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body.bg-night-950 {
+      background: #fff !important;
+      min-height: 100vh;
+      color: #222;
+    }
+    .sidebar-light {
+      background: #f8fafc !important;
+      border-right: 1px solid #e2e8f0;
+    }
+    .card {
+      background: #f8fafc !important;
+      color: #222 !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+    .text-dark {
+      color: #222 !important;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, #0ca5f1, #36baff);
+      color: #fff !important;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #36baff, #0ca5f1);
+      color: #fff !important;
+    }
+    #userAvatar {
+      font-size: 2.5rem;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+  </style>
+</head>
+<body class="bg-night-950 min-h-screen flex">
+  <!-- Sidebar simples -->
+  <aside class="w-64 sidebar-light p-8 flex flex-col gap-8 min-h-screen">
+    <div class="flex items-center gap-3 mb-8">
+      <div class="bg-gradient-to-r from-lunar-400 to-lunar-600 w-10 h-10 rounded-xl flex items-center justify-center shadow-lg">
+        <i data-lucide="user" class="w-6 h-6 text-white"></i>
+      </div>
+      <span class="text-xl font-bold text-gradient">Cliente</span>
+    </div>
+    <nav class="flex flex-col gap-4">
+      <a href="#" class="text-dark hover:text-lunar-400 font-semibold flex items-center gap-2">
+        <i data-lucide="home" class="w-5 h-5"></i> Início
+      </a>
+      <a href="#" class="text-dark hover:text-lunar-400 font-semibold flex items-center gap-2">
+        <i data-lucide="settings" class="w-5 h-5"></i> Configurações
+      </a>
+      <button id="logoutBtn" class="mt-8 px-4 py-2 rounded-lg bg-red-600 text-white font-bold flex items-center gap-2">
+        <i data-lucide="log-out" class="w-5 h-5"></i> Sair
+      </button>
+    </nav>
+  </aside>
+  <!-- Conteúdo principal -->
+  <main class="flex-1 p-12 flex flex-col items-center justify-center">
+    <div class="card p-8 rounded-2xl w-full max-w-lg text-center">
+      <!-- Foto do usuário com iniciais -->
+      <div class="flex justify-center mb-6">
+        <div id="userAvatar" class="w-20 h-20 rounded-full bg-gradient-to-r from-lunar-400 to-lunar-600 flex items-center justify-center shadow-lg text-white text-3xl font-bold select-none uppercase">
+          <!-- Iniciais aparecem aqui -->
+          <span id="userInitials">?</span>
+        </div>
+      </div>
+      <h1 class="text-3xl font-bold text-dark mb-6">Bem-vindo à sua área de cliente!</h1>
+      <div id="clientData" class="text-lg text-dark">
+        <div class="mb-4">
+          <span class="font-semibold">Usuário:</span> <span id="clientUsername">...</span>
+        </div>
+        <div>
+          <span class="font-semibold">Status:</span> <span id="clientStatus">...</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    // Função para gerar iniciais
+    function getInitials(name) {
+      if (!name) return '?';
+      return name
+        .split(' ')
+        .map(part => part[0])
+        .join('')
+        .substring(0, 2)
+        .toUpperCase();
+    }
+
+    // Proteção de rota
+    const token = localStorage.getItem('client_token');
+    if (!token) {
+      window.location.href = '/cliente/login.html';
+    } else {
+      fetch('/api/client/me', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.username) {
+          document.getElementById('clientUsername').textContent = data.username;
+          document.getElementById('clientStatus').textContent = data.active ? 'Ativo' : 'Inativo';
+          // Atualiza as iniciais
+          document.getElementById('userInitials').textContent = getInitials(data.username);
+        } else {
+          document.getElementById('clientUsername').textContent = '-';
+          document.getElementById('clientStatus').textContent = '-';
+          document.getElementById('userInitials').textContent = '?';
+        }
+      })
+      .catch(() => {
+        document.getElementById('clientUsername').textContent = '-';
+        document.getElementById('clientStatus').textContent = '-';
+        document.getElementById('userInitials').textContent = '?';
+      });
+    }
+    document.getElementById('logoutBtn').onclick = function() {
+      localStorage.removeItem('client_token');
+      window.location.href = '/cliente/login.html';
+    };
+  </script>
+</body>
+</html>

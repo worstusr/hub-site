@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simulador de Campanhas - Estevan Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'lunar': {
+              50: '#f0f7ff',
+              100: '#e0efff',
+              200: '#bae3ff',
+              300: '#7cd0ff',
+              400: '#36baff',
+              500: '#0ca5f1',
+              600: '#0284ce',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49'
+            },
+            'night': {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#020617'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-transparent text-white overflow-hidden">
+  <div class="max-w-2xl mx-auto bg-gradient-to-br from-night-800/90 to-night-900/90 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl border border-lunar-800/30">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-lunar-600 to-lunar-500 text-white p-6">
+      <h1 class="text-2xl font-bold flex items-center gap-3">
+        <i data-lucide="trending-up" class="w-6 h-6"></i>
+        Descubra Seu Potencial
+      </h1>
+      <p class="text-lunar-100 text-sm mt-1">Simule quanto você pode alcançar com marketing digital</p>
+    </div>
+
+    <div class="p-6 sm:p-8 pb-8">
+      <!-- Orçamento -->
+      <div class="mb-8">
+        <label for="investmentSlider" class="block mb-4 font-semibold text-lunar-200 text-lg flex items-center gap-2">
+          <i data-lucide="dollar-sign" class="w-5 h-5 text-lunar-400"></i>
+          Quanto você quer investir em anúncios?
+        </label>
+        <div class="bg-night-800/60 p-6 rounded-2xl border border-lunar-700/50">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-sm text-lunar-400">R$ 10</span>
+            <span class="text-3xl font-bold text-lunar-300">R$ <span id="investmentValue">100</span></span>
+            <span class="text-sm text-lunar-400">R$ 5.000</span>
+          </div>
+          <input type="range" min="10" max="5000" value="100" id="investmentSlider" class="w-full h-3 bg-night-700 rounded-lg appearance-none cursor-pointer lunar-slider" />
+        </div>
+        <p class="text-xs text-lunar-400 mt-3 flex items-center gap-2">
+          <i data-lucide="lightbulb" class="w-4 h-4"></i>
+          Valores baseados em campanhas reais no Facebook e Instagram
+        </p>
+      </div>
+
+      <!-- Objetivo -->
+      <div class="mb-8">
+        <label class="block mb-4 font-semibold text-lunar-200 text-lg flex items-center gap-2">
+          <i data-lucide="target" class="w-5 h-5 text-lunar-400"></i>
+          O que você quer conseguir?
+        </label>
+        <select id="goalSelect" class="w-full p-4 border border-lunar-700/50 rounded-2xl focus:border-lunar-500 focus:outline-none bg-night-800/60 text-white backdrop-blur-xl">
+          <option value="engagement">💬 Mais curtidas, comentários e engajamento</option>
+          <option value="traffic">🚶 Trazer mais pessoas para meu negócio/site</option>
+          <option value="conversions">💰 Conseguir mais vendas e clientes</option>
+        </select>
+      </div>
+
+      <!-- Duração -->
+      <div class="mb-8">
+        <label class="block mb-4 font-semibold text-lunar-200 text-lg flex items-center gap-2">
+          <i data-lucide="calendar" class="w-5 h-5 text-lunar-400"></i>
+          Por quantos dias quer anunciar?
+        </label>
+        <select id="durationSelect" class="w-full p-4 border border-lunar-700/50 rounded-2xl focus:border-lunar-500 focus:outline-none bg-night-800/60 text-white backdrop-blur-xl">
+          <option value="1">1 dia</option>
+          <option value="3">3 dias</option>
+          <option value="7" selected>7 dias (recomendado)</option>
+          <option value="14">14 dias</option>
+          <option value="30">30 dias</option>
+        </select>
+      </div>
+
+      <!-- Resultados Estimados -->
+      <div class="bg-gradient-to-br from-lunar-500/10 to-lunar-600/10 p-6 rounded-3xl mb-6 border border-lunar-400/20 backdrop-blur-xl">
+        <h3 class="font-bold text-white mb-6 flex items-center gap-3 text-xl">
+          <i data-lucide="bar-chart-3" class="w-6 h-6 text-lunar-400"></i>
+          O Que Você Vai Conseguir
+        </h3>
+        
+        <div class="grid grid-cols-1 gap-4 mb-6">
+          <!-- Alcance -->
+          <div class="bg-night-800/60 p-5 rounded-2xl shadow-lg border border-lunar-700/30">
+            <div class="flex items-center justify-between">
+              <span class="text-lunar-200 flex items-center gap-2 text-base">
+                <i data-lucide="users" class="w-5 h-5 text-lunar-400"></i>
+                Pessoas que vão ver seus anúncios
+              </span>
+              <span class="font-bold text-xl text-lunar-300" id="reachCount">2.500 - 3.800</span>
+            </div>
+          </div>
+
+          <!-- Impressões -->
+          <div class="bg-night-800/60 p-5 rounded-2xl shadow-lg border border-lunar-700/30">
+            <div class="flex items-center justify-between">
+              <span class="text-lunar-200 flex items-center gap-2 text-base">
+                <i data-lucide="eye" class="w-5 h-5 text-lunar-400"></i>
+                Quantas vezes aparecerá na tela
+              </span>
+              <span class="font-bold text-xl text-lunar-300" id="impressionsCount">3.200 - 5.100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interações -->
+        <div class="bg-night-800/60 p-6 rounded-2xl shadow-lg border border-lunar-700/30">
+          <h4 class="font-semibold text-white mb-6 flex items-center gap-2 text-lg">
+            <i data-lucide="heart" class="w-5 h-5 text-lunar-400"></i>
+            Interações que Você Vai Receber
+          </h4>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl">
+              <span class="flex items-center gap-2 text-lunar-300">
+                <span>👍</span> Curtidas
+              </span>
+              <span class="font-bold text-lunar-200" id="likesCount">45-78</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl">
+              <span class="flex items-center gap-2 text-lunar-300">
+                <span>❤️</span> Amei
+              </span>
+              <span class="font-bold text-lunar-200" id="loveCount">12-25</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl">
+              <span class="flex items-center gap-2 text-lunar-300">
+                <span>💬</span> Comentários
+              </span>
+              <span class="font-bold text-lunar-200" id="commentsCount">8-15</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl">
+              <span class="flex items-center gap-2 text-lunar-300">
+                <span>↗️</span> Compartilhamentos
+              </span>
+              <span class="font-bold text-lunar-200" id="sharesCount">3-8</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl">
+              <span class="flex items-center gap-2 text-lunar-300">
+                <span>🔗</span> Cliques no link
+              </span>
+              <span class="font-bold text-lunar-200" id="clicksCount">15-35</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl">
+              <span class="flex items-center gap-2 text-lunar-300">
+                <span>📞</span> Ações diretas
+              </span>
+              <span class="font-bold text-lunar-200" id="actionsCount">5-12</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Informações adicionais -->
+      <div class="bg-gradient-to-br from-lunar-600/20 to-lunar-500/20 border border-lunar-400/30 p-6 rounded-2xl backdrop-blur-xl">
+        <h4 class="font-semibold text-white mb-4 flex items-center gap-2 text-lg">
+          <i data-lucide="info" class="w-5 h-5 text-lunar-400"></i>
+          Resumo da Sua Campanha
+        </h4>
+        <div class="text-sm text-lunar-200 space-y-3">
+          <div class="flex items-center gap-3">
+            <i data-lucide="map-pin" class="w-4 h-4 text-lunar-400"></i>
+            <span><strong>Público:</strong> Pessoas da sua região interessadas no seu tipo de negócio</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i data-lucide="clock" class="w-4 h-4 text-lunar-400"></i>
+            <span><strong>Duração:</strong> <span id="durationInfo">7 dias</span></span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i data-lucide="calculator" class="w-4 h-4 text-lunar-400"></i>
+            <span><strong>Investimento por dia:</strong> R$ <span id="dailyCost">14,29</span></span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i data-lucide="smartphone" class="w-4 h-4 text-lunar-400"></i>
+            <span><strong>Onde aparece:</strong> Facebook e Instagram</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Botão de ação -->
+      <div class="mt-8 text-center">
+        <button onclick="window.parent.scrollToSection('contato')" class="bg-gradient-to-r from-lunar-500 to-lunar-600 text-white px-8 py-4 rounded-2xl font-bold hover:from-lunar-400 hover:to-lunar-500 transition-all duration-300 shadow-lg hover:shadow-lunar-500/25 transform hover:scale-105 w-full">
+          <i data-lucide="rocket" class="w-5 h-5 inline mr-3"></i>
+          Quero Uma Proposta Personalizada
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/simulator.js"></script>
+
+  <style>
+    .lunar-slider::-webkit-slider-thumb {
+      appearance: none;
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #36baff, #0ca5f1);
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(54, 186, 255, 0.4);
+      border: 2px solid #0ca5f1;
+    }
+    .lunar-slider::-moz-range-thumb {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #36baff, #0ca5f1);
+      cursor: pointer;
+      border: 2px solid #0ca5f1;
+      box-shadow: 0 4px 12px rgba(54, 186, 255, 0.4);
+    }
+    .lunar-slider::-webkit-slider-track {
+      background: linear-gradient(90deg, #075985, #36baff);
+      height: 6px;
+      border-radius: 3px;
+    }
+  </style>
+</body>
+</html>

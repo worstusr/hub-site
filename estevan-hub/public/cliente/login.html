@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Login Cliente - Estevan Hub</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-night-950 flex items-center justify-center min-h-screen text-white" style="background: linear-gradient(135deg, #0c4a6e 0%, #0f172a 100%);">
+  <div class="bg-night-900/80 p-10 rounded-3xl shadow-2xl w-full max-w-md border border-lunar-700/30">
+    <h1 class="text-3xl font-bold text-gradient mb-8 text-center">Área do Cliente</h1>
+    <form id="loginForm" class="space-y-6">
+      <div>
+        <label class="block text-lunar-200 mb-2" for="username">Usuário</label>
+        <input id="username" name="username" type="text" required class="w-full p-3 rounded-xl bg-night-800/70 border border-lunar-700/30 text-lunar-100 focus:outline-none focus:border-lunar-400 placeholder:text-lunar-400 transition-all duration-200">
+      </div>
+      <div>
+        <label class="block text-lunar-200 mb-2" for="password">Senha</label>
+        <input id="password" name="password" type="password" required class="w-full p-3 rounded-xl bg-night-800/70 border border-lunar-700/30 text-lunar-100 focus:outline-none focus:border-lunar-400 placeholder:text-lunar-400 transition-all duration-200">
+      </div>
+      <button type="submit" class="btn-primary w-full py-3 rounded-xl font-bold text-lg">Entrar</button>
+      <div id="loginError" class="text-red-400 text-center mt-4 hidden"></div>
+    </form>
+  </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('loginError');
+      errorDiv.classList.add('hidden');
+      try {
+        const res = await fetch('/api/client/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.token) {
+            localStorage.setItem('client_token', data.token);
+            window.location.href = '/cliente/dashboard.html';
+          } else {
+            errorDiv.textContent = data.message || 'Usuário ou senha inválidos';
+            errorDiv.classList.remove('hidden');
+          }
+        } else {
+          const data = await res.json().catch(() => ({}));
+          errorDiv.textContent = data.message || 'Usuário ou senha inválidos';
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (err) {
+        errorDiv.textContent = 'Erro ao conectar ao servidor';
+        errorDiv.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Dashboard Admin - Estevan Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b p-4">
+    <div class="flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-blue-600">Dashboard Admin</h1>
+      <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+        <i data-lucide="log-out" class="w-4 h-4 inline mr-2"></i>Sair
+      </button>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="bg-white shadow-sm p-4 mb-6">
+    <div class="flex gap-4">
+      <button class="nav-btn active" data-section="articles">
+        <i data-lucide="newspaper" class="w-4 h-4 inline mr-2"></i>Artigos
+      </button>
+      <button class="nav-btn" data-section="users">
+        <i data-lucide="users" class="w-4 h-4 inline mr-2"></i>Usuários
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4">
+    <!-- Seção Artigos -->
+    <section id="section-articles" class="section">
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-bold">Gerenciar Artigos</h2>
+          <button id="btnNewArticle" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>Novo Artigo
+          </button>
+        </div>
+        <div id="articlesList" class="overflow-x-auto"></div>
+      </div>
+    </section>
+
+    <!-- Seção Usuários -->
+    <section id="section-users" class="section hidden">
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-bold">Gerenciar Usuários</h2>
+          <button id="btnNewUser" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>Novo Usuário
+          </button>
+        </div>
+        <div id="usersList" class="overflow-x-auto"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal Artigo -->
+  <div id="modalArticle" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold" id="modalArticleTitle">Novo Artigo</h3>
+          <button id="closeModalArticle" class="text-gray-400 hover:text-gray-600">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+        <form id="formArticle" class="space-y-4">
+          <input type="hidden" id="articleId">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-semibold mb-1">Título *</label>
+              <input type="text" id="articleTitle" class="w-full border rounded p-2" required>
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Slug (URL) *</label>
+              <input type="text" id="articleSlug" class="w-full border rounded p-2" required>
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Resumo</label>
+            <textarea id="articleSummary" class="w-full border rounded p-2" rows="2"></textarea>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Conteúdo</label>
+            <textarea id="articleContent" class="w-full border rounded p-2" style="min-height: 300px;"></textarea>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-semibold mb-1">Categoria</label>
+              <input type="text" id="articleCategory" class="w-full border rounded p-2">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Status</label>
+              <select id="articleStatus" class="w-full border rounded p-2">
+                <option value="publicado">Publicado</option>
+                <option value="rascunho">Rascunho</option>
+                <option value="removido">Removido</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Tags</label>
+            <input type="text" id="articleTags" class="w-full border rounded p-2">
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-semibold mb-1">Imagem de Destaque (URL)</label>
+              <input type="text" id="articleImage" class="w-full border rounded p-2">
+            </div>
+            <div>
+              <label class="block font-semibold mb-1">Thumbnail (URL)</label>
+              <input type="text" id="articleThumbnail" class="w-full border rounded p-2">
+            </div>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Autor</label>
+            <input type="text" id="articleAuthor" class="w-full border rounded p-2" value="Equipe Estevan Hub">
+          </div>
+          <div class="flex gap-4 pt-4">
+            <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
+              Salvar Artigo
+            </button>
+            <button type="button" id="cancelModalArticle" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Usuário -->
+  <div id="modalUser" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-lg w-full max-w-md">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-bold" id="modalUserTitle">Novo Usuário</h3>
+          <button id="closeModalUser" class="text-gray-400 hover:text-gray-600">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+        <form id="formUser" class="space-y-4">
+          <input type="hidden" id="userId">
+          <div>
+            <label class="block font-semibold mb-1">Usuário *</label>
+            <input type="text" id="userUsername" class="w-full border rounded p-2" required>
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Senha</label>
+            <input type="password" id="userPassword" class="w-full border rounded p-2">
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Status</label>
+            <select id="userActive" class="w-full border rounded p-2">
+              <option value="1">Ativo</option>
+              <option value="0">Inativo</option>
+            </select>
+          </div>
+          <div class="flex gap-4 pt-4">
+            <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
+              Salvar Usuário
+            </button>
+            <button type="button" id="cancelModalUser" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Proteção de rota
+    const token = localStorage.getItem('admin_token');
+    if (!token || token !== 'admin_token_123') window.location.href = '/admin/login.html';
+
+    // Navegação entre seções
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const section = btn.getAttribute('data-section');
+        document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(`section-${section}`).classList.remove('hidden');
+        if (section === 'articles') loadArticles();
+        if (section === 'users') loadUsers();
+      });
+    });
+
+    // CRUD ARTIGOS
+    let ckeditorInstance = null;
+    let currentArticleId = null;
+
+    async function loadArticles() {
+      const list = document.getElementById('articlesList');
+      list.innerHTML = '<div class="text-center py-4">Carregando...</div>';
+      try {
+        const res = await fetch('/api/admin/publications', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        let articles = await res.json();
+        if (!Array.isArray(articles)) articles = [];
+        if (articles.length === 0) {
+          list.innerHTML = '<div class="text-center py-8 text-gray-500">Nenhum artigo encontrado</div>';
+          return;
+        }
+        list.innerHTML = `
+          <table class="min-w-full text-sm">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="text-left p-3 font-semibold">Título</th>
+                <th class="text-left p-3 font-semibold">Slug</th>
+                <th class="text-left p-3 font-semibold">Status</th>
+                <th class="text-left p-3 font-semibold">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${articles.map(article => `
+                <tr class="border-t hover:bg-gray-50">
+                  <td class="p-3 font-medium">${article.titulo}</td>
+                  <td class="p-3 text-gray-600">${article.slug}</td>
+                  <td class="p-3">
+                    <span class="px-2 py-1 rounded text-xs ${article.status === 'publicado' ? 'bg-green-100 text-green-800' : article.status === 'rascunho' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}">
+                      ${article.status}
+                    </span>
+                  </td>
+                  <td class="p-3 space-x-2">
+                    <button onclick="editArticle(${article.id})" class="text-blue-600 hover:underline">Editar</button>
+                    <button onclick="deleteArticle(${article.id})" class="text-red-600 hover:underline">Excluir</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (error) {
+        list.innerHTML = '<div class="text-center py-8 text-red-500">Erro ao carregar artigos</div>';
+      }
+    }
+
+    function openArticleModal(article = null) {
+      const modal = document.getElementById('modalArticle');
+      const title = document.getElementById('modalArticleTitle');
+      const form = document.getElementById('formArticle');
+      form.reset();
+      currentArticleId = article?.id || null;
+      title.textContent = article ? 'Editar Artigo' : 'Novo Artigo';
+      if (article) {
+        document.getElementById('articleId').value = article.id;
+        document.getElementById('articleTitle').value = article.titulo || '';
+        document.getElementById('articleSlug').value = article.slug || '';
+        document.getElementById('articleSummary').value = article.resumo || '';
+        document.getElementById('articleContent').value = article.conteudo || '';
+        document.getElementById('articleCategory').value = article.categoria || '';
+        document.getElementById('articleTags').value = article.tags || '';
+        document.getElementById('articleStatus').value = article.status || 'publicado';
+        document.getElementById('articleImage').value = article.imagem_destaque || '';
+        document.getElementById('articleThumbnail').value = article.thumbnail || '';
+        document.getElementById('articleAuthor').value = article.autor || 'Equipe Estevan Hub';
+      } else {
+        document.getElementById('articleAuthor').value = 'Equipe Estevan Hub';
+        document.getElementById('articleStatus').value = 'publicado';
+      }
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        if (ckeditorInstance) {
+          ckeditorInstance.destroy().then(() => {
+            ClassicEditor.create(document.getElementById('articleContent')).then(editor => {
+              ckeditorInstance = editor;
+              if (article) editor.setData(article.conteudo || '');
+            });
+          });
+        } else {
+          ClassicEditor.create(document.getElementById('articleContent')).then(editor => {
+            ckeditorInstance = editor;
+            if (article) editor.setData(article.conteudo || '');
+          });
+        }
+      }, 100);
+      document.getElementById('articleTitle').focus();
+    }
+
+    function closeArticleModal() {
+      document.getElementById('modalArticle').classList.add('hidden');
+      if (ckeditorInstance) {
+        ckeditorInstance.destroy().then(() => { ckeditorInstance = null; });
+      }
+      currentArticleId = null;
+    }
+
+    document.getElementById('btnNewArticle').onclick = () => openArticleModal();
+    document.getElementById('closeModalArticle').onclick = closeArticleModal;
+    document.getElementById('cancelModalArticle').onclick = closeArticleModal;
+
+    document.getElementById('formArticle').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      const titulo = document.getElementById('articleTitle').value.trim();
+      const slug = document.getElementById('articleSlug').value.trim();
+      if (!titulo) { alert('Título é obrigatório'); return; }
+      if (!slug) { alert('Slug é obrigatório'); return; }
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Salvando...';
+      try {
+        const data = {
+          titulo,
+          slug,
+          resumo: document.getElementById('articleSummary').value.trim(),
+          conteudo: ckeditorInstance ? ckeditorInstance.getData() : document.getElementById('articleContent').value,
+          categoria: document.getElementById('articleCategory').value.trim(),
+          tags: document.getElementById('articleTags').value.trim(),
+          status: document.getElementById('articleStatus').value,
+          imagem_destaque: document.getElementById('articleImage').value.trim(),
+          thumbnail: document.getElementById('articleThumbnail').value.trim(),
+          autor: document.getElementById('articleAuthor').value.trim() || 'Equipe Estevan Hub'
+        };
+        const url = currentArticleId ? `/api/admin/publications/${currentArticleId}` : '/api/admin/publications';
+        const method = currentArticleId ? 'PUT' : 'POST';
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          closeArticleModal();
+          loadArticles();
+        } else {
+          const err = await res.json();
+          alert('Erro: ' + (err.error || 'Falha ao salvar artigo'));
+        }
+      } catch (error) {
+        alert('Erro: ' + error.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+
+    window.editArticle = async function(id) {
+      try {
+        const res = await fetch('/api/admin/publications', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const articles = await res.json();
+        const article = articles.find(a => a.id == id);
+        if (article) openArticleModal(article);
+      } catch (error) {
+        alert('Erro ao carregar artigo');
+      }
+    };
+
+    window.deleteArticle = async function(id) {
+      if (!confirm('Excluir este artigo?')) return;
+      try {
+        const res = await fetch(`/api/admin/publications/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.ok) {
+          loadArticles();
+        } else {
+          alert('Erro ao excluir artigo');
+        }
+      } catch (error) {
+        alert('Erro ao excluir artigo');
+      }
+    };
+
+    // CRUD USUÁRIOS
+    let currentUserId = null;
+
+    async function loadUsers() {
+      const list = document.getElementById('usersList');
+      list.innerHTML = '<div class="text-center py-4">Carregando...</div>';
+      try {
+        const res = await fetch('/api/client/users', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        let users = await res.json();
+        if (!Array.isArray(users)) users = [];
+        if (users.length === 0) {
+          list.innerHTML = '<div class="text-center py-8 text-gray-500">Nenhum usuário encontrado</div>';
+          return;
+        }
+        list.innerHTML = `
+          <table class="min-w-full text-sm">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="text-left p-3 font-semibold">Usuário</th>
+                <th class="text-left p-3 font-semibold">Status</th>
+                <th class="text-left p-3 font-semibold">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${users.map(user => `
+                <tr class="border-t hover:bg-gray-50">
+                  <td class="p-3 font-medium">${user.username}</td>
+                  <td class="p-3">${user.active ? 'Ativo' : 'Inativo'}</td>
+                  <td class="p-3 space-x-2">
+                    <button onclick="editUser(${user.id})" class="text-blue-600 hover:underline">Editar</button>
+                    <button onclick="deleteUser(${user.id})" class="text-red-600 hover:underline">Excluir</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (error) {
+        list.innerHTML = '<div class="text-center py-8 text-red-500">Erro ao carregar usuários</div>';
+      }
+    }
+
+    // Modal Usuário
+    function openUserModal(user = null) {
+      const modal = document.getElementById('modalUser');
+      const title = document.getElementById('modalUserTitle');
+      const form = document.getElementById('formUser');
+      form.reset();
+      currentUserId = user?.id || null;
+      title.textContent = user ? 'Editar Usuário' : 'Novo Usuário';
+      if (user) {
+        document.getElementById('userId').value = user.id;
+        document.getElementById('userUsername').value = user.username || '';
+        document.getElementById('userActive').value = user.active ? '1' : '0';
+        document.getElementById('userPassword').value = '';
+      } else {
+        document.getElementById('userActive').value = '1';
+      }
+      modal.classList.remove('hidden');
+      document.getElementById('userUsername').focus();
+    }
+
+    function closeUserModal() {
+      document.getElementById('modalUser').classList.add('hidden');
+      currentUserId = null;
+    }
+
+    document.getElementById('btnNewUser').onclick = () => openUserModal();
+    document.getElementById('closeModalUser').onclick = closeUserModal;
+    document.getElementById('cancelModalUser').onclick = closeUserModal;
+
+    document.getElementById('formUser').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      const username = document.getElementById('userUsername').value.trim();
+      const password = document.getElementById('userPassword').value;
+      const active = document.getElementById('userActive').value;
+      if (!username) { alert('Usuário é obrigatório'); return; }
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Salvando...';
+      try {
+        const data = { username, active };
+        if (password) data.password = password;
+        const url = currentUserId ? `/api/client/users/${currentUserId}` : '/api/client/users';
+        const method = currentUserId ? 'PUT' : 'POST';
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          closeUserModal();
+          loadUsers();
+        } else {
+          const err = await res.json();
+          alert('Erro: ' + (err.error || 'Falha ao salvar usuário'));
+        }
+      } catch (error) {
+        alert('Erro: ' + error.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+
+    window.editUser = async function(id) {
+      try {
+        const res = await fetch('/api/client/users', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const users = await res.json();
+        const user = users.find(u => u.id == id);
+        if (user) openUserModal(user);
+      } catch (error) {
+        alert('Erro ao carregar usuário');
+      }
+    };
+
+    window.deleteUser = async function(id) {
+      if (!confirm('Excluir este usuário?')) return;
+      try {
+        const res = await fetch(`/api/client/users/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.ok) {
+          loadUsers();
+        } else {
+          alert('Erro ao excluir usuário');
+        }
+      } catch (error) {
+        alert('Erro ao excluir usuário');
+      }
+    };
+
+    // Carregar artigos ao abrir dashboard
+    loadArticles();
+  </script>
+</body>
+</html>

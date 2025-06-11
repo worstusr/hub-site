@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciar Usuários - Estevan Hub</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-night-950 min-h-screen p-8">
+  <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow p-8">
+    <h1 class="text-2xl font-bold mb-6">Gerenciar Usuários</h1>
+    <button id="btnNovo" class="btn-primary px-4 py-2 rounded mb-6">Novo Usuário</button>
+    <div id="listaUsuarios"></div>
+    <div id="formContainer" class="hidden mt-8">
+      <h2 class="text-xl font-bold mb-4" id="formTitle">Novo Usuário</h2>
+      <form id="formUsuario" class="space-y-4">
+        <input type="hidden" id="userId">
+        <input type="text" id="userUsername" placeholder="Usuário" class="w-full border rounded p-2" required>
+        <input type="password" id="userPassword" placeholder="Senha" class="w-full border rounded p-2">
+        <select id="userActive" class="w-full border rounded p-2">
+          <option value="1">Ativo</option>
+          <option value="0">Inativo</option>
+        </select>
+        <div class="flex gap-4">
+          <button type="submit" class="btn-primary px-6 py-2 rounded">Salvar</button>
+          <button type="button" id="btnCancelar" class="px-6 py-2 rounded border border-lunar-400 text-lunar-500">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    const token = localStorage.getItem('admin_token');
+    if (!token) window.location.href = '/admin/login.html';
+
+    function carregarLista() {
+      fetch('/api/client/users', { headers: { Authorization: 'Bearer ' + token } })
+        .then(r => r.json())
+        .then(list => {
+          document.getElementById('listaUsuarios').innerHTML = `
+            <table class="min-w-full text-sm mb-6">
+              <thead>
+                <tr>
+                  <th class="text-left p-2">Usuário</th>
+                  <th class="text-left p-2">Status</th>
+                  <th class="text-left p-2">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${list.map(user => `
+                  <tr>
+                    <td class="p-2">${user.username}</td>
+                    <td class="p-2">${user.active ? 'Ativo' : 'Inativo'}</td>
+                    <td class="p-2 flex gap-2">
+                      <button onclick="editar(${user.id})" class="text-lunar-500">Editar</button>
+                      <button onclick="remover(${user.id})" class="text-red-500">Remover</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        });
+    }
+
+    function editar(id) {
+      fetch('/api/client/users', { headers: { Authorization: 'Bearer ' + token } })
+        .then(r => r.json())
+        .then(list => {
+          const user = list.find(u => u.id == id);
+          if (user) {
+            document.getElementById('formContainer').classList.remove('hidden');
+            document.getElementById('formTitle').textContent = 'Editar Usuário';
+            document.getElementById('formUsuario').reset();
+            document.getElementById('userId').value = user.id;
+            document.getElementById('userUsername').value = user.username || '';
+            document.getElementById('userActive').value = user.active ? '1' : '0';
+            document.getElementById('userPassword').value = '';
+          }
+        });
+    }
+
+    function remover(id) {
+      if (!confirm('Deseja remover este usuário?')) return;
+      fetch(`/api/client/users/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + token }
+      }).then(() => carregarLista());
+    }
+
+    document.getElementById('btnNovo').onclick = () => {
+      document.getElementById('formContainer').classList.remove('hidden');
+      document.getElementById('formTitle').textContent = 'Novo Usuário';
+      document.getElementById('formUsuario').reset();
+      document.getElementById('userId').value = '';
+    };
+
+    document.getElementById('btnCancelar').onclick = () => {
+      document.getElementById('formContainer').classList.add('hidden');
+    };
+
+    document.getElementById('formUsuario').onsubmit = function(e) {
+      e.preventDefault();
+      const id = document.getElementById('userId').value;
+      const data = {
+        username: document.getElementById('userUsername').value,
+        password: document.getElementById('userPassword').value,
+        active: document.getElementById('userActive').value
+      };
+      const url = id ? `/api/client/users/${id}` : '/api/client/users';
+      const method = id ? 'PUT' : 'POST';
+      fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify(data)
+      }).then(() => {
+        document.getElementById('formContainer').classList.add('hidden');
+        carregarLista();
+      });
+    };
+
+    carregarLista();
+    window.editar = editar;
+    window.remover = remover;
+  </script>
+</body>
+</html>

@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estevan Hub - Transformando Negócios Digitais</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'lunar': {
+              50: '#f0f7ff', 100: '#e0efff', 200: '#bae3ff', 300: '#7cd0ff',
+              400: '#36baff', 500: '#0ca5f1', 600: '#0284ce', 700: '#0369a1',
+              800: '#075985', 900: '#0c4a6e', 950: '#082f49'
+            },
+            'night': {
+              50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1',
+              400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155',
+              800: '#1e293b', 900: '#0f172a', 950: '#020617'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gradient-to-br from-night-950 via-night-900 to-lunar-950 text-white min-h-screen">
+  <!-- Header -->
+  <header class="bg-night-900/80 backdrop-blur-xl shadow-2xl border-b border-lunar-800/50 sticky top-0 z-50">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-6">
+        <div class="flex items-center group cursor-pointer">
+          <div class="bg-gradient-to-r from-lunar-400 to-lunar-600 w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
+            <i data-lucide="zap" class="w-6 h-6 text-white"></i>
+          </div>
+          <span class="ml-3 text-3xl font-bold text-gradient">Estevan Hub</span>
+        </div>
+        <div class="hidden md:flex space-x-8 items-center">
+          <a href="#simulador" class="text-lunar-200 hover:text-lunar-400 transition-all duration-300 relative group">
+            Simulador
+            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-lunar-400 group-hover:w-full transition-all duration-300"></span>
+          </a>
+          <a href="#servicos" class="text-lunar-200 hover:text-lunar-400 transition-all duration-300 relative group">
+            Serviços
+            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-lunar-400 group-hover:w-full transition-all duration-300"></span>
+          </a>
+          <a href="#portfolio" class="text-lunar-200 hover:text-lunar-400 transition-all duration-300 relative group">
+            Portfolio
+            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-lunar-400 group-hover:w-full transition-all duration-300"></span>
+          </a>
+          <a href="#contato" class="btn-primary text-white px-6 py-3 rounded-full click-effect">
+            <i data-lucide="send" class="w-4 h-4 inline mr-2"></i>
+            Contato
+          </a>
+          <!-- Botão Entrar -->
+          <a href="/admin/login.html" class="ml-6 px-5 py-2 rounded-full border-2 border-lunar-400 text-lunar-300 hover:bg-lunar-400 hover:text-night-900 transition-all duration-300 font-semibold">
+            <i data-lucide="log-in" class="w-4 h-4 inline mr-2"></i>
+            Entrar
+          </a>
+          <a href="/cliente/login.html" class="ml-2 px-5 py-2 rounded-full border-2 border-lunar-400 text-lunar-300 hover:bg-lunar-400 hover:text-night-900 transition-all duration-300 font-semibold">
+            <i data-lucide="user" class="w-4 h-4 inline mr-2"></i>
+            Entrar como cliente
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-bg py-32 relative overflow-hidden">
+    <div class="absolute inset-0">
+      <div class="stars" id="stars"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-night-950/50 to-night-950"></div>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="hero-content transition-all duration-700">
+        <h1 class="text-6xl md:text-8xl font-bold mb-8 leading-tight">
+          <span class="block text-white">Transformamos</span>
+          <span class="block text-gradient animate-pulse">Ideias</span>
+          <span class="block text-lunar-100">em Sucesso</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-12 text-lunar-200 max-w-4xl mx-auto leading-relaxed">
+          Criamos <span class="text-lunar-400 font-semibold">soluções digitais inteligentes</span> que fazem seu negócio crescer de verdade. 
+          <br>Mais vendas, menos trabalho manual, resultados que você pode medir.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+          <button onclick="scrollToSection('simulador')" class="btn-primary text-white px-10 py-5 rounded-full font-semibold interactive">
+            <i data-lucide="trending-up" class="w-5 h-5 inline mr-3"></i>
+            Ver Quanto Posso Economizar
+          </button>
+          <button onclick="scrollToSection('portfolio')" class="border-2 border-lunar-400 text-lunar-300 px-10 py-5 rounded-full font-semibold hover:bg-lunar-400 hover:text-night-900 transition-all duration-300 interactive">
+            <i data-lucide="eye" class="w-5 h-5 inline mr-3"></i>
+            Ver Casos de Sucesso
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio - MOVIDO PARA PRIMEIRO -->
+  <section id="portfolio" class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-20 animate-on-scroll">
+        <h2 class="text-5xl font-bold text-white mb-6">Histórias de Sucesso</h2>
+        <p class="text-xl text-lunar-200 max-w-3xl mx-auto">
+          Veja como <span class="text-lunar-400 font-semibold">transformamos negócios reais</span> com soluções sob medida
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-12 mb-16">
+        <!-- Projeto 1 - Sistema Imobiliário -->
+        <div class="portfolio-card group bg-glass rounded-3xl overflow-hidden shadow-2xl hover:shadow-lunar-500/20 transition-all duration-500 hover:scale-105 cursor-pointer animate-on-scroll">
+          <div class="h-72 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 relative overflow-hidden border-b border-lunar-800/30">
+            <div class="absolute inset-0 bg-gradient-to-br from-emerald-400/10 to-teal-600/20"></div>
+            <div class="absolute top-8 left-8 right-8">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <i data-lucide="home" class="w-6 h-6 text-white"></i>
+                </div>
+                <span class="text-white font-bold text-lg">Imobiliária Regional</span>
+              </div>
+            </div>
+            <div class="absolute bottom-8 left-8 right-8">
+              <div class="bg-night-900/90 backdrop-blur-xl rounded-2xl p-6 border border-lunar-700/50">
+                <h3 class="text-2xl font-bold text-white mb-3">Sistema de Gestão Imobiliária</h3>
+                <p class="text-lunar-200 text-sm mb-4">Plataforma completa para cadastro, busca e gestão de imóveis</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="px-3 py-1 bg-red-500/20 text-red-300 text-xs rounded-full border border-red-500/30">Laravel</span>
+                  <span class="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full border border-blue-500/30">Vue.js</span>
+                  <span class="px-3 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full border border-orange-500/30">MySQL</span>
+                  <span class="px-3 py-1 bg-green-500/20 text-green-300 text-xs rounded-full border border-green-500/30">Maps API</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-8">
+            <div class="grid grid-cols-3 gap-6 text-center">
+              <div>
+                <div class="text-3xl font-bold text-emerald-400 mb-2">+85%</div>
+                <div class="text-sm text-lunar-300">Leads Qualificados</div>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-teal-400 mb-2">1.2k</div>
+                <div class="text-sm text-lunar-300">Imóveis Cadastrados</div>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-blue-400 mb-2">40%</div>
+                <div class="text-sm text-lunar-300">Redução no Tempo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projeto 2 - Portal de Notícias -->
+        <div class="portfolio-card group bg-glass rounded-3xl overflow-hidden shadow-2xl hover:shadow-lunar-500/20 transition-all duration-500 hover:scale-105 cursor-pointer animate-on-scroll">
+          <div class="h-72 bg-gradient-to-br from-indigo-500/20 to-purple-600/20 relative overflow-hidden border-b border-lunar-800/30">
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-400/10 to-purple-600/20"></div>
+            <div class="absolute top-8 left-8 right-8">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-12 h-12 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <i data-lucide="newspaper" class="w-6 h-6 text-white"></i>
+                </div>
+                <span class="text-white font-bold text-lg">Portal Local</span>
+              </div>
+            </div>
+            <div class="absolute bottom-8 left-8 right-8">
+              <div class="bg-night-900/90 backdrop-blur-xl rounded-2xl p-6 border border-lunar-700/50">
+                <h3 class="text-2xl font-bold text-white mb-3">Site de Notícias Responsivo</h3>
+                <p class="text-lunar-200 text-sm mb-4">WordPress customizado para publicação autônoma</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-full border border-blue-500/30">WordPress</span>
+                  <span class="px-3 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-full border border-purple-500/30">Custom Theme</span>
+                  <span class="px-3 py-1 bg-green-500/20 text-green-300 text-xs rounded-full border border-green-500/30">SEO</span>
+                  <span class="px-3 py-1 bg-orange-500/20 text-orange-300 text-xs rounded-full border border-orange-500/30">Mobile First</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-8">
+            <div class="grid grid-cols-3 gap-6 text-center">
+              <div>
+                <div class="text-3xl font-bold text-indigo-400 mb-2">+120%</div>
+                <div class="text-sm text-lunar-300">Tempo no Site</div>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-purple-400 mb-2">35k</div>
+                <div class="text-sm text-lunar-300">Visitantes/Mês</div>
+              </div>
+              <div class="text-3xl font-bold text-blue-400 mb-2">-75%</div>
+              <div class="text-sm text-lunar-300">Tempo de Publicação</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mais projetos em grid menor -->
+      <div class="grid md:grid-cols-4 gap-8 mb-16">
+        <!-- ERP Python -->
+        <div class="portfolio-mini-card bg-glass rounded-2xl p-6 hover:border-lunar-600/50 transition-all duration-300 hover:scale-105 cursor-pointer animate-on-scroll">
+          <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+            <i data-lucide="settings" class="w-8 h-8 text-white"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Sistema de Gestão</h4>
+          <p class="text-sm text-lunar-300 mb-4">Automatização de processos administrativos</p>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-orange-400">-60%</div>
+            <div class="text-xs text-lunar-400">Trabalho manual</div>
+          </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="portfolio-mini-card bg-glass rounded-2xl p-6 hover:border-lunar-600/50 transition-all duration-300 hover:scale-105 cursor-pointer animate-on-scroll">
+          <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+            <i data-lucide="bar-chart-3" class="w-8 h-8 text-white"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Dashboard Analytics</h4>
+          <p class="text-sm text-lunar-300 mb-4">Relatórios automáticos de vendas</p>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-pink-400">+150%</div>
+            <div class="text-xs text-lunar-400">Precisão nas decisões</div>
+          </div>
+        </div>
+
+        <!-- E-commerce -->
+        <div class="portfolio-mini-card bg-glass rounded-2xl p-6 hover:border-lunar-600/50 transition-all duration-300 hover:scale-105 cursor-pointer animate-on-scroll">
+          <div class="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+            <i data-lucide="shopping-cart" class="w-8 h-8 text-white"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Loja Virtual</h4>
+          <p class="text-sm text-lunar-300 mb-4">E-commerce completo com pagamentos</p>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-cyan-400">+200%</div>
+            <div class="text-xs text-lunar-400">Vendas online</div>
+          </div>
+        </div>
+
+        <!-- Landing Page -->
+        <div class="portfolio-mini-card bg-glass rounded-2xl p-6 hover:border-lunar-600/50 transition-all duration-300 hover:scale-105 cursor-pointer animate-on-scroll">
+          <div class="w-16 h-16 bg-gradient-to-r from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+            <i data-lucide="mouse-pointer-click" class="w-8 h-8 text-white"></i>
+          </div>
+          <h4 class="text-lg font-bold text-white mb-2">Landing Page</h4>
+          <p class="text-sm text-lunar-300 mb-4">Página de conversão otimizada</p>
+          <div class="text-center">
+            <div class="text-2xl font-bold text-violet-400">12%</div>
+            <div class="text-xs text-lunar-400">Taxa de conversão</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção de Resultados - NÚMEROS BASEADOS NOS PROJETOS REAIS -->
+      <div class="bg-glass rounded-3xl p-12 shadow-2xl animate-on-scroll">
+        <div class="text-center mb-12">
+          <h3 class="text-4xl font-bold text-white mb-6">Resultados Comprovados</h3>
+          <p class="text-xl text-lunar-200">Impacto real dos nossos projetos nas empresas clientes</p>
+        </div>
+        
+        <!-- Métricas baseadas nos projetos desenvolvidos -->
+        <div class="grid md:grid-cols-4 gap-8 mb-12">
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="bg-gradient-to-br from-emerald-500/20 to-emerald-600/20 rounded-2xl p-6 border border-emerald-500/30">
+              <div class="text-5xl font-bold text-emerald-400 mb-3 counter" data-target="85">0</div>
+              <div class="text-emerald-300 font-medium text-lg">% Aumento Leads</div>
+              <div class="text-xs text-emerald-400 mt-2">Sistema Imobiliário</div>
+            </div>
+          </div>
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="bg-gradient-to-br from-purple-500/20 to-purple-600/20 rounded-2xl p-6 border border-purple-500/30">
+              <div class="text-5xl font-bold text-purple-400 mb-3 counter" data-target="120">0</div>
+              <div class="text-purple-300 font-medium text-lg">% Tempo no Site</div>
+              <div class="text-xs text-purple-400 mt-2">Portal de Notícias</div>
+            </div>
+          </div>
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="bg-gradient-to-br from-cyan-500/20 to-cyan-600/20 rounded-2xl p-6 border border-cyan-500/30">
+              <div class="text-5xl font-bold text-cyan-400 mb-3 counter" data-target="200">0</div>
+              <div class="text-cyan-300 font-medium text-lg">% Vendas Online</div>
+              <div class="text-xs text-cyan-400 mt-2">E-commerce</div>
+            </div>
+          </div>
+          <div class="text-center group hover:scale-105 transition-transform duration-300">
+            <div class="bg-gradient-to-br from-orange-500/20 to-orange-600/20 rounded-2xl p-6 border border-orange-500/30">
+              <div class="text-5xl font-bold text-orange-400 mb-3 counter" data-target="60">0</div>
+              <div class="text-orange-300 font-medium text-lg">% Menos Trabalho</div>
+              <div class="text-xs text-orange-400 mt-2">Automação</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROI e Economia por projeto -->
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+          <div class="bg-night-800/60 p-6 rounded-2xl border border-lunar-700/50 group hover:border-emerald-500/50 transition-all duration-300">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-16 h-16 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center">
+                <i data-lucide="home" class="w-8 h-8 text-white"></i>
+              </div>
+              <div>
+                <div class="font-bold text-white text-lg">Sistema Imobiliário</div>
+                <div class="text-sm text-emerald-400">ROI: 340% em 8 meses</div>
+              </div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-lunar-300">Economia tempo/dia:</span>
+                <span class="text-emerald-400 font-semibold">3h</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-lunar-300">Leads qualificados:</span>
+                <span class="text-emerald-400 font-semibold">+85%</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-lunar-300">Imóveis gerenciados:</span>
+                <span class="text-emerald-400 font-semibold">1.200+</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-night-800/60 p-6 rounded-2xl border border-lunar-700/50 group hover:border-purple-500/50 transition-all duration-300">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-16 h-16 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl flex items-center justify-center">
+                <i data-lucide="newspaper" class="w-8 h-8 text-white"></i>
+              </div>
+              <div>
+                <div class="font-bold text-white text-lg">Portal de Notícias</div>
+                <div class="text-sm text-purple-400">Crescimento: 180% visitantes</div>
+              </div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-lunar-300">Tempo permanência:</span>
+                <span class="text-purple-400 font-semibold">+120%</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-lunar-300">Velocidade publicação:</span>
+                <span class="text-purple-400 font-semibold">75% mais rápido</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-lunar-300">Visitantes únicos/mês:</span>
+                <span class="text-purple-400 font-semibold">35k</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-night-800/60 p-6 rounded-2xl border border-lunar-700/50 group hover:border-cyan-500/50 transition-all duration-300">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-cyan-600 rounded-xl flex items-center justify-center">
+                <i data-lucide="shopping-cart" class="w-8 h-8 text-white"></i>
+              </div>
+              <div>
+                <div class="font-bold text-white text-lg">E-commerce</div>
+                <div class="text-sm text-cyan-400">Faturamento: +200%</div>
+              </div>
+            </div>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-lunar-300">Conversão média:</span>
+                <span class="text-cyan-400 font-semibold">12%</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-lunar-300">Tempo de carregamento:</span>
+                <span class="text-cyan-400 font-semibold">< 2s</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-lunar-300">Vendas 24h/dia:</span>
+                <span class="text-cyan-400 font-semibold">Automatizadas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTÍCIAS REAIS DO BANCO DE DADOS -->
+        <div class="mb-12">
+          <h4 class="text-3xl font-bold text-white mb-8 text-center flex items-center justify-center gap-3">
+            <i data-lucide="newspaper" class="w-8 h-8 text-lunar-400"></i>
+            Notícias Recentes
+          </h4>
+          <p class="text-center text-lunar-300 mb-8">Tendências do mercado que validam nossos resultados</p>
+          
+          <div class="grid md:grid-cols-3 gap-8" id="noticiasContainer">
+            <!-- Notícias carregadas via JS -->
+          </div>
+        </div>
+
+        <!-- O QUE FAZEMOS POR VOCÊ - MOVIDO PARA CIMA DOS DEPOIMENTOS -->
+        <div class="text-center mb-16">
+          <h4 class="text-3xl font-bold text-white mb-8">Como Alcançamos Esses Resultados</h4>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="text-center group">
+              <div class="w-20 h-20 bg-gradient-to-r from-lunar-500 to-lunar-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-lunar-500/25 group-hover:scale-110 transition-all duration-300">
+                <i data-lucide="brain" class="w-10 h-10 text-white"></i>
+              </div>
+              <div class="text-xl font-bold text-white mb-3">Estratégia Baseada em Dados</div>
+              <div class="text-lunar-300">Analisamos métricas reais e comportamento do usuário para otimizar resultados</div>
+            </div>
+            <div class="text-center group">
+              <div class="w-20 h-20 bg-gradient-to-r from-lunar-400 to-lunar-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-lunar-400/25 group-hover:scale-110 transition-all duration-300">
+                <i data-lucide="code-2" class="w-10 h-10 text-white"></i>
+              </div>
+              <div class="text-xl font-bold text-white mb-3">Tecnologia de Ponta</div>
+              <div class="text-lunar-300">Usamos as melhores ferramentas e frameworks para máxima performance</div>
+            </div>
+            <div class="text-center group">
+              <div class="w-20 h-20 bg-gradient-to-r from-lunar-600 to-lunar-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-lunar-600/25 group-hover:scale-110 transition-all duration-300">
+                <i data-lucide="users-2" class="w-10 h-10 text-white"></i>
+              </div>
+              <div class="text-xl font-bold text-white mb-3">Suporte Especializado</div>
+              <div class="text-lunar-300">Acompanhamento próximo e otimização contínua para garantir o sucesso</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simulador Section - AGORA SEGUNDO -->
+  <section id="simulador" class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16 animate-on-scroll">
+        <h2 class="text-5xl font-bold text-white mb-6">Descubra Seu Potencial</h2>
+        <p class="text-xl text-lunar-200 mb-12 max-w-3xl mx-auto">
+          Veja <span class="text-lunar-400 font-semibold">quanto você pode alcançar</span> investindo em marketing digital inteligente
+        </p>
+      </div>
+      
+      <!-- Simulador integrado -->
+      <div class="max-w-2xl mx-auto mb-16 animate-on-scroll">
+        <div class="bg-glass rounded-3xl shadow-2xl overflow-hidden simulator-glow">
+          <!-- Header do Simulador -->
+          <div class="bg-gradient-to-r from-lunar-600 to-lunar-500 text-white p-6">
+            <h3 class="text-2xl font-bold flex items-center gap-3">
+              <i data-lucide="trending-up" class="w-6 h-6"></i>
+              Calcule Seus Resultados
+            </h3>
+            <p class="text-lunar-100 text-sm mt-1">Simule campanhas baseadas em dados reais do Meta Ads + cotação atual USD</p>
+          </div>
+
+          <div class="p-6 sm:p-8">
+            <!-- Orçamento -->
+            <div class="mb-8">
+              <label for="investmentSlider" class="block mb-4 font-semibold text-lunar-200 text-lg flex items-center gap-2">
+                <i data-lucide="dollar-sign" class="w-5 h-5 text-lunar-400"></i>
+                Quanto você quer investir em anúncios?
+              </label>
+              <div class="bg-night-800/60 p-6 rounded-2xl border border-lunar-700/50">
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-sm text-lunar-400">R$ 10</span>
+                  <span class="text-3xl font-bold text-lunar-300">R$ <span id="investmentValue">100</span></span>
+                  <span class="text-sm text-lunar-400">R$ 5.000</span>
+                </div>
+                <input type="range" min="10" max="5000" value="100" id="investmentSlider" class="w-full h-3 bg-night-700 rounded-lg appearance-none cursor-pointer lunar-slider" />
+              </div>
+              <p class="text-xs text-lunar-400 mt-3 flex items-center gap-2">
+                <i data-lucide="lightbulb" class="w-4 h-4"></i>
+                Valores baseados em campanhas reais no Facebook e Instagram
+              </p>
+            </div>
+
+            <!-- Objetivo -->
+            <div class="mb-8">
+              <label class="block mb-4 font-semibold text-lunar-200 text-lg flex items-center gap-2">
+                <i data-lucide="target" class="w-5 h-5 text-lunar-400"></i>
+                O que você quer conseguir?
+              </label>
+              <select id="goalSelect" class="w-full p-4 border border-lunar-700/50 rounded-2xl focus:border-lunar-500 focus:outline-none bg-night-800/60 text-white backdrop-blur-xl">
+                <option value="engagement">💬 Mais curtidas, comentários e engajamento</option>
+                <option value="traffic">🚶 Trazer mais pessoas para meu negócio/site</option>
+                <option value="conversions">💰 Conseguir mais vendas e clientes</option>
+              </select>
+            </div>
+
+            <!-- Duração com valor padrão 3 dias -->
+            <div class="mb-8">
+              <label class="block mb-4 font-semibold text-lunar-200 text-lg flex items-center gap-2">
+                <i data-lucide="calendar" class="w-5 h-5 text-lunar-400"></i>
+                Por quantos dias quer anunciar?
+              </label>
+              <select id="durationSelect" class="w-full p-4 border border-lunar-700/50 rounded-2xl focus:border-lunar-500 focus:outline-none bg-night-800/60 text-white backdrop-blur-xl">
+                <option value="1">1 dia</option>
+                <option value="3" selected>3 dias</option>
+                <option value="7">7 dias (recomendado)</option>
+                <option value="14">14 dias</option>
+                <option value="30">30 dias</option>
+              </select>
+            </div>
+
+            <!-- Resultados Estimados -->
+            <div class="result-card p-6 rounded-3xl mb-6">
+              <h4 class="font-bold text-white mb-6 flex items-center gap-3 text-xl">
+                <i data-lucide="bar-chart-3" class="w-6 h-6 text-lunar-400"></i>
+                O Que Você Vai Conseguir
+              </h4>
+              
+              <div class="grid grid-cols-1 gap-4 mb-6">
+                <!-- Alcance -->
+                <div class="bg-night-800/60 p-5 rounded-2xl shadow-lg border border-lunar-700/30 result-card">
+                  <div class="flex items-center justify-between">
+                    <span class="text-lunar-200 flex items-center gap-2 text-base">
+                      <i data-lucide="users" class="w-5 h-5 text-lunar-400"></i>
+                      Pessoas que vão ver seus anúncios
+                    </span>
+                    <span class="font-bold text-xl text-lunar-300" id="reachCount">2.500 - 3.800</span>
+                  </div>
+                </div>
+
+                <!-- Impressões -->
+                <div class="bg-night-800/60 p-5 rounded-2xl shadow-lg border border-lunar-700/30 result-card">
+                  <div class="flex items-center justify-between">
+                    <span class="text-lunar-200 flex items-center gap-2 text-base">
+                      <i data-lucide="eye" class="w-5 h-5 text-lunar-400"></i>
+                      Quantas vezes aparecerá na tela
+                    </span>
+                    <span class="font-bold text-xl text-lunar-300" id="impressionsCount">3.200 - 5.100</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interações -->
+              <div class="bg-night-800/60 p-6 rounded-2xl shadow-lg border border-lunar-700/30">
+                <h5 class="font-semibold text-white mb-6 flex items-center gap-2 text-lg">
+                  <i data-lucide="heart" class="w-5 h-5 text-lunar-400"></i>
+                  Interações que Você Vai Receber
+                </h5>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                  <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl interactive">
+                    <span class="flex items-center gap-2 text-lunar-300">
+                      <span>👍</span> Curtidas
+                    </span>
+                    <span class="font-bold text-lunar-200" id="likesCount">45-78</span>
+                  </div>
+                  <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl interactive">
+                    <span class="flex items-center gap-2 text-lunar-300">
+                      <span>❤️</span> Amei
+                    </span>
+                    <span class="font-bold text-lunar-200" id="loveCount">12-25</span>
+                  </div>
+                  <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl interactive">
+                    <span class="flex items-center gap-2 text-lunar-300">
+                      <span>💬</span> Comentários
+                    </span>
+                    <span class="font-bold text-lunar-200" id="commentsCount">8-15</span>
+                  </div>
+                  <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl interactive">
+                    <span class="flex items-center gap-2 text-lunar-300">
+                      <span>↗️</span> Compartilhamentos
+                    </span>
+                    <span class="font-bold text-lunar-200" id="sharesCount">3-8</span>
+                  </div>
+                  <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl interactive">
+                    <span class="flex items-center gap-2 text-lunar-300">
+                      <span>🔗</span> Cliques no link
+                    </span>
+                    <span class="font-bold text-lunar-200" id="clicksCount">15-35</span>
+                  </div>
+                  <div class="flex items-center justify-between p-3 bg-night-900/50 rounded-xl interactive">
+                    <span class="flex items-center gap-2 text-lunar-300">
+                      <span>📞</span> Ações diretas
+                    </span>
+                    <span class="font-bold text-lunar-200" id="actionsCount">5-12</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Informações adicionais com novos dados -->
+            <div class="bg-gradient-to-br from-lunar-600/20 to-lunar-500/20 border border-lunar-400/30 p-6 rounded-2xl backdrop-blur-xl mb-8">
+              <h5 class="font-semibold text-white mb-4 flex items-center gap-2 text-lg">
+                <i data-lucide="info" class="w-5 h-5 text-lunar-400"></i>
+                Resumo da Sua Campanha
+              </h5>
+              <div class="text-sm text-lunar-200 space-y-3">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="map-pin" class="w-4 h-4 text-lunar-400"></i>
+                  <span><strong>Público:</strong> Pessoas da sua região interessadas no seu tipo de negócio</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <i data-lucide="clock" class="w-4 h-4 text-lunar-400"></i>
+                  <span><strong>Duração:</strong> <span id="durationInfo">3 dias</span></span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <i data-lucide="calculator" class="w-4 h-4 text-lunar-400"></i>
+                  <span><strong>Investimento por dia:</strong> R$ <span id="dailyCost">33,33</span></span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <i data-lucide="smartphone" class="w-4 h-4 text-lunar-400"></i>
+                  <span><strong>Onde aparece:</strong> Facebook e Instagram</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <i data-lucide="star" class="w-4 h-4 text-lunar-400"></i>
+                  <span><strong>Gestão Estevan Hub:</strong> Estratégia, criação e otimização inclusos</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Botão de ação -->
+            <div class="text-center">
+              <button onclick="scrollToSection('contato')" class="btn-primary text-white px-8 py-4 rounded-2xl font-bold w-full click-effect">
+                <i data-lucide="rocket" class="w-5 h-5 inline mr-3"></i>
+                Quero Uma Proposta Personalizada
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Seção "Por Que Somos Diferentes" -->
+      <div class="text-center animate-on-scroll">
+        <div class="bg-glass p-12 rounded-3xl max-w-4xl mx-auto">
+          <h3 class="text-3xl font-bold text-white mb-8">Por Que Somos Diferentes?</h3>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="text-center interactive">
+              <div class="w-20 h-20 bg-gradient-to-r from-lunar-500 to-lunar-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-lunar-500/25">
+                <i data-lucide="shield-check" class="w-10 h-10 text-white"></i>
+              </div>
+              <div class="text-xl font-bold text-white mb-3">Gestão 100% Transparente</div>
+              <div class="text-lunar-300">Você vê cada centavo investido e cada resultado conquistado</div>
+            </div>
+            <div class="text-center interactive">
+              <div class="w-20 h-20 bg-gradient-to-r from-lunar-400 to-lunar-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-lunar-400/25">
+                <i data-lucide="palette" class="w-10 h-10 text-white"></i>
+              </div>
+              <div class="text-xl font-bold text-white mb-3">Criativos que Convertem</div>
+              <div class="text-lunar-300">Design e copy que fazem as pessoas pararem, lerem e comprarem</div>
+            </div>
+            <div class="text-center interactive">
+              <div class="w-20 h-20 bg-gradient-to-r from-lunar-600 to-lunar-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-lunar-600/25">
+                <i data-lucide="trending-up" class="w-10 h-10 text-white"></i>
+              </div>
+              <div class="text-xl font-bold text-white mb-3">Otimização Constante</div>
+              <div class="text-lunar-300">Testamos, medimos e melhoramos seus resultados toda semana</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Serviços -->
+  <section id="servicos" class="py-20 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-20 animate-on-scroll">
+        <h2 class="text-5xl font-bold text-white mb-6">Nossos Serviços</h2>
+        <p class="text-xl text-lunar-200 max-w-3xl mx-auto">
+          Três pilares que <span class="text-lunar-400 font-semibold">multiplicam seus resultados</span> e reduzem seu trabalho
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="service-card service-card-dark group p-8 rounded-3xl hover:border-lunar-600/50 transition-all duration-500 hover:scale-105 cursor-pointer animate-on-scroll">
+          <div class="w-20 h-20 bg-gradient-to-r from-lunar-500 to-lunar-600 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-lunar-500/25">
+            <i data-lucide="code" class="w-10 h-10 text-white"></i>
+          </div>
+          <h3 class="text-3xl font-bold text-white mb-6">Sites que Vendem</h3>
+          <p class="text-lunar-200 mb-8 text-lg leading-relaxed"></p>
+            Criamos sites que <span class="text-lunar-400 font-semibold">convertem visitantes em clientes</span>. 
+            Rápidos, bonitos e que aparecem no Google.
+          </p>
+          <ul class="text-lunar-300 space-y-3">
+            <li class="flex items-center">
+              <i data-lucide="check-circle" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Landing Pages que dobram suas vendas
+            </li>
+            <li class="flex items-center">
+              <i data-lucide="check-circle" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Lojas online completas
+            </li>
+            <li class="flex items-center">
+              <i data-lucide="check-circle" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Sites que carregam em 2 segundos
+            </li>
+            <li class="flex items-center">
+              <i data-lucide="check-circle" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Sistemas personalizados para sua empresa
+            </li>
+          </ul>
+        </div>
+
+        <div class="service-card service-card-dark group p-8 rounded-3xl hover:border-lunar-600/50 transition-all duration-500 hover:scale-105 cursor-pointer animate-on-scroll">
+          <div class="w-20 h-20 bg-gradient-to-r from-lunar-400 to-lunar-500 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-lunar-400/25">
+            <i data-lucide="megaphone" class="w-10 h-10 text-white"></i>
+          </div>
+          <h3 class="text-3xl font-bold text-white mb-6">Marketing que Funciona</h3>
+          <p class="text-lunar-200 mb-8 text-lg leading-relaxed">
+            Suas campanhas vão <span class="text-lunar-400 font-semibold">trazer clientes de verdade</span>. 
+            Sem desperdício, só resultados que você pode contar.
+          </p>
+          <ul class="text-lunar-300 space-y-3">
+            <li class="flex items-center">
+              <i data-lucide="target" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Anúncios que trazem clientes qualificados
+            </li>
+            <li class="flex items-center">
+              <i data-lucide="search" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Seu negócio no topo do Google
+            </li>
+            <li class="flex items-center">
+              <i data-lucide="users" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Redes sociais que engajam
+            </li>
+            <li class="flex items-center">
+              <i data-lucide="mail" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              E-mails que vendem mais
+            </li>
+          </ul>
+        </div>
+
+        <div class="service-card service-card-dark group p-8 rounded-3xl hover:border-lunar-600/50 transition-all duration-500 hover:scale-105 cursor-pointer animate-on-scroll">
+          <div class="w-20 h-20 bg-gradient-to-r from-lunar-600 to-lunar-700 rounded-3xl flex items-center justify-center mb-8 group-hover:scale-110 transition-all duration-300 shadow-lg shadow-lunar-600/25">
+            <i data-lucide="bot" class="w-10 h-10 text-white"></i>
+          </div>
+          <h3 class="text-3xl font-bold text-white mb-6">Automação Inteligente</h3>
+          <p class="text-lunar-200 mb-8 text-lg leading-relaxed">
+            <span class="text-lunar-400 font-semibold">Elimine tarefas repetitivas</span> e foque no que realmente importa. 
+            Seus sistemas trabalham sozinhos.
+          </p>
+          <ul class="text-lunar-300 space-y-3">
+            <li class="flex items-center">
+              <i data-lucide="zap" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Processos 80% mais rápidos
+            </li>
+            <li class="flex items-center">
+              <i data-lucide="brain" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Relatórios automáticos e inteligentes
+            </li>
+            <li class="flex items-center">
+              <i data-lucide="shield-check" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Backup e segurança 24/7
+            </li>
+            <li class="flex items-center">
+              <i data-lucide="trending-up" class="w-5 h-5 text-lunar-400 mr-3"></i>
+              Integração com seus sistemas atuais
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section class="py-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-lunar-600/20 to-lunar-400/20"></div>
+    <div class="relative max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8 animate-on-scroll">
+      <h2 class="text-5xl font-bold text-white mb-8">Pronto Para Crescer de Verdade?</h2>
+      <p class="text-xl mb-12 text-lunar-200 max-w-3xl mx-auto leading-relaxed">
+        Pare de perder tempo com soluções que não funcionam. 
+        <br><span class="text-lunar-400 font-semibold">Vamos criar algo que realmente transforme seu negócio.</span>
+      </p>
+      <button onclick="scrollToSection('contato')" class="btn-primary text-white px-12 py-6 rounded-full font-bold text-lg click-effect">
+        <i data-lucide="rocket" class="w-6 h-6 inline mr-3"></i>
+        Quero Meu Projeto Agora
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer com NOVO SISTEMA DE CONTATO VIA WHATSAPP -->
+  <footer id="contato" class="bg-night-950 border-t border-lunar-800/30 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-16">
+        <div class="animate-on-scroll">
+          <div class="flex items-center mb-8">
+            <div class="bg-gradient-to-r from-lunar-400 to-lunar-600 w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg">
+              <i data-lucide="zap" class="w-7 h-7 text-white"></i>
+            </div>
+            <span class="ml-4 text-3xl font-bold text-gradient">Estevan Hub</span>
+          </div>
+          <p class="text-lunar-200 mb-8 text-lg leading-relaxed">
+            Transformamos ideias em <span class="text-lunar-400 font-semibold">soluções digitais que realmente funcionam</span>. 
+            Menos complicação, mais resultados.
+          </p>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4 interactive">
+              <i data-lucide="mail" class="w-5 h-5 text-lunar-400"></i>
+              <span class="text-lunar-200">contato@estevanhub.com.br</span>
+            </div>
+            <div class="flex items-center gap-4 interactive">
+              <i data-lucide="phone" class="w-5 h-5 text-lunar-400"></i>
+              <span class="text-lunar-200">(11) 99999-9999</span>
+            </div>
+            <div class="flex items-center gap-4 interactive">
+              <i data-lucide="map-pin" class="w-5 h-5 text-lunar-400"></i>
+              <span class="text-lunar-200">São Paulo, SP</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- NOVO SISTEMA DE CONTATO ELEGANTE -->
+        <div class="animate-on-scroll">
+          <h3 class="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <i data-lucide="message-circle" class="w-8 h-8 text-green-400"></i>
+            Fale Conosco no WhatsApp
+          </h3>
+          <p class="text-lunar-200 mb-8 text-lg"></p>
+            Escolha sua situação e receba uma <span class="text-lunar-400 font-semibold">proposta personalizada</span> 
+            direto no seu WhatsApp em menos de 5 minutos.
+          </p>
+
+          <div class="space-y-4" id="whatsappOptions">
+            <!-- Opção 1 -->
+            <div class="whatsapp-option bg-gradient-to-r from-green-500/10 to-green-600/10 border border-green-500/30 p-6 rounded-2xl hover:border-green-400/50 transition-all duration-300 cursor-pointer group" 
+                 data-option="existing">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <i data-lucide="users" class="w-6 h-6 text-white"></i>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-lg font-bold text-white mb-2">Já tenho redes sociais</h4>
+                  <p class="text-lunar-300 text-sm mb-3">Quero saber mais sobre preços, planos e como potencializar meus resultados</p>
+                  <div class="flex items-center gap-2 text-green-400 text-sm font-medium">
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    <span>Receber proposta personalizada</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Opção 2 -->
+            <div class="whatsapp-option bg-gradient-to-r from-blue-500/10 to-blue-600/10 border border-blue-500/30 p-6 rounded-2xl hover:border-blue-400/50 transition-all duration-300 cursor-pointer group" 
+                 data-option="create-managed">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <i data-lucide="rocket" class="w-6 h-6 text-white"></i>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-lg font-bold text-white mb-2">Começar do zero com estratégia</h4>
+                  <p class="text-lunar-300 text-sm mb-3">Criar redes sociais e gerenciar com marketing profissional aplicado</p>
+                  <div class="flex items-center gap-2 text-blue-400 text-sm font-medium">
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    <span>Pacote completo com gestão</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Opção 3 -->
+            <div class="whatsapp-option bg-gradient-to-r from-purple-500/10 to-purple-600/10 border border-purple-500/30 p-6 rounded-2xl hover:border-purple-400/50 transition-all duration-300 cursor-pointer group" 
+                 data-option="create-only">
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                  <i data-lucide="settings" class="w-6 h-6 text-white"></i>
+                </div>
+                <div class="flex-1">
+                  <h4 class="text-lg font-bold text-white mb-2">Só criar redes sociais</h4>
+                  <p class="text-lunar-300 text-sm mb-3">Configurar perfis profissionais para eu mesmo administrar</p>
+                  <div class="flex items-center gap-2 text-purple-400 text-sm font-medium">
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    <span>Setup completo de perfis</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botão de confirmação -->
+          <div class="mt-8 text-center">
+            <button id="whatsappButton" 
+                    class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:from-green-400 hover:to-green-500 transition-all duration-300 shadow-lg hover:shadow-green-500/25 transform hover:scale-105 w-full disabled:opacity-50 disabled:cursor-not-allowed click-effect"
+                    disabled>
+              <i data-lucide="message-circle" class="w-6 h-6 inline mr-3"></i>
+              <span id="buttonText">Selecione uma opção acima</span>
+            </button>
+          </div>
+
+          <div class="mt-6 p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
+            <div class="flex items-center gap-3 text-green-400 text-sm">
+              <i data-lucide="shield-check" class="w-5 h-5 flex-shrink-0"></i>
+              <span>Resposta garantida em até 30 minutos durante horário comercial (8h às 18h)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-lunar-800/30 mt-16 pt-8 text-center text-lunar-400">
+        <p>&copy; 2025 Estevan Hub. Transformando negócios através da tecnologia.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script src="/js/simulator.js"></script>
+  <script>
+    // Carregar notícias recentes na home
+    fetch('/api/publications')
+      .then(res => res.json())
+      .then(list => {
+        const container = document.getElementById('noticiasContainer');
+        if (!container) return;
+        container.innerHTML = list.slice(0, 6).map(pub => {
+          return `
+            <div class="bg-night-800/80 p-6 rounded-2xl border border-lunar-700/50 group hover:border-lunar-400/70 transition-all duration-300 shadow-lg flex flex-col h-full">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="text-xs text-lunar-400">${pub.data_formatada || ''}</div>
+              </div>
+              <h3 class="font-bold text-white mb-2 text-lg group-hover:text-lunar-400 transition-colors">
+                <a href="/noticia/${pub.slug}" class="hover:underline">${pub.titulo}</a>
+              </h3>
+              <p class="text-lunar-200 text-sm mb-4 flex-1">${pub.resumo ? pub.resumo.substring(0, 120) + '...' : ''}</p>
+              <a href="/noticia/${pub.slug}" class="text-lunar-400 hover:underline font-semibold mt-auto flex items-center gap-1">
+                <i data-lucide="arrow-right" class="w-4 h-4"></i> Ver mais
+              </a>
+            </div>
+          `;
+        }).join('');
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      });
+  </script>
+  <style>
+    #noticiasContainer .bg-night-800\/80 {
+      background: rgba(30,41,59,0.85) !important;
+      border: 1px solid #334155 !important;
+      box-shadow: 0 4px 24px 0 rgba(54,186,255,0.10);
+      transition: border 0.2s;
+    }
+    #noticiasContainer .group:hover {
+      border-color: #36baff !important;
+    }
+    #noticiasContainer h3 a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    #noticiasContainer h3 a:hover {
+      color: #36baff;
+      text-decoration: underline;
+    }
+    #noticiasContainer .text-lunar-400 {
+      color: #36baff !important;
+    }
+    #noticiasContainer .text-lunar-200 {
+      color: #bae3ff !important;
+    }
+  </style>
+</body>
+</html>

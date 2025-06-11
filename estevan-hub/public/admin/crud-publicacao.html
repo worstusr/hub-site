@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciar Publicações - Estevan Hub</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+</head>
+<body class="bg-night-950 min-h-screen p-8">
+  <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow p-8">
+    <h1 class="text-2xl font-bold mb-6">Gerenciar Publicações</h1>
+    <button id="btnNova" class="btn-primary px-4 py-2 rounded mb-6">Nova Publicação</button>
+    <div id="listaPublicacoes"></div>
+    <div id="formContainer" class="hidden mt-8">
+      <h2 class="text-xl font-bold mb-4" id="formTitle">Nova Publicação</h2>
+      <form id="formPublicacao" class="space-y-4">
+        <input type="hidden" id="pubId">
+        <div>
+          <label class="block font-semibold mb-1">Título</label>
+          <input type="text" id="pubTitulo" placeholder="Título do artigo" class="w-full border rounded p-2" required>
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Slug (URL)</label>
+          <input type="text" id="pubSlug" placeholder="exemplo-de-slug" class="w-full border rounded p-2" required>
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Resumo</label>
+          <textarea id="pubResumo" placeholder="Resumo curto para listagem e SEO" class="w-full border rounded p-2" rows="2"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Conteúdo</label>
+          <textarea id="pubConteudo" placeholder="Escreva o artigo completo aqui..." class="w-full border rounded p-2"></textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold mb-1">Categoria</label>
+            <input type="text" id="pubCategoria" placeholder="Ex: Marketing Digital" class="w-full border rounded p-2">
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Status</label>
+            <select id="pubStatus" class="w-full border rounded p-2">
+              <option value="publicado">Publicado</option>
+              <option value="rascunho">Rascunho</option>
+              <option value="removido">Removido</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Tags</label>
+          <input type="text" id="pubTags" placeholder="Ex: marketing,vendas,negócios" class="w-full border rounded p-2">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold mb-1">Data de Publicação</label>
+            <input type="datetime-local" id="pubDataPublicacao" class="w-full border rounded p-2">
+          </div>
+          <div>
+            <label class="block font-semibold mb-1">Imagem de Destaque (URL)</label>
+            <input type="text" id="pubImagemDestaque" placeholder="URL da imagem principal" class="w-full border rounded p-2">
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Thumbnail (URL)</label>
+          <input type="text" id="pubThumbnail" placeholder="URL da thumbnail (opcional)" class="w-full border rounded p-2">
+        </div>
+        <div>
+          <label class="block font-semibold mb-1">Autor</label>
+          <input type="text" id="pubAutor" placeholder="Nome do autor" class="w-full border rounded p-2">
+        </div>
+        <div class="flex gap-4">
+          <button type="submit" class="btn-primary px-6 py-2 rounded">Salvar</button>
+          <button type="button" id="btnCancelar" class="px-6 py-2 rounded border border-lunar-400 text-lunar-500">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+    const token = localStorage.getItem('admin_token');
+    if (!token) window.location.href = '/admin/login.html';
+
+    function carregarLista() {
+      fetch('/api/admin/publications', { headers: { Authorization: 'Bearer ' + token } })
+        .then(r => r.json())
+        .then(list => {
+          document.getElementById('listaPublicacoes').innerHTML = `
+            <table class="min-w-full text-sm mb-6">
+              <thead>
+                <tr>
+                  <th class="text-left p-2">Título</th>
+                  <th class="text-left p-2">Slug</th>
+                  <th class="text-left p-2">Categoria</th>
+                  <th class="text-left p-2">Status</th>
+                  <th class="text-left p-2">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${list.map(pub => `
+                  <tr>
+                    <td class="p-2">${pub.titulo}</td>
+                    <td class="p-2">${pub.slug}</td>
+                    <td class="p-2">${pub.categoria || ''}</td>
+                    <td class="p-2">${pub.status || 'publicado'}</td>
+                    <td class="p-2 flex gap-2">
+                      <button onclick="editar(${pub.id})" class="text-lunar-500">Editar</button>
+                      <button onclick="remover(${pub.id})" class="text-red-500">Remover</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        });
+    }
+
+    let ckeditorInstance;
+    function initCKEditor() {
+      if (ckeditorInstance) {
+        ckeditorInstance.destroy().then(() => {
+          ClassicEditor.create(document.getElementById('pubConteudo'))
+            .then(editor => { ckeditorInstance = editor; });
+        });
+      } else {
+        ClassicEditor.create(document.getElementById('pubConteudo'))
+          .then(editor => { ckeditorInstance = editor; });
+      }
+    }
+
+    function editar(id) {
+      fetch('/api/admin/publications', { headers: { Authorization: 'Bearer ' + token } })
+        .then(r => r.json())
+        .then(list => {
+          const pub = list.find(p => p.id == id);
+          if (pub) {
+            document.getElementById('formContainer').classList.remove('hidden');
+            document.getElementById('formTitle').textContent = 'Editar Publicação';
+            document.getElementById('formPublicacao').reset();
+            document.getElementById('pubId').value = pub.id;
+            document.getElementById('pubTitulo').value = pub.titulo || '';
+            document.getElementById('pubSlug').value = pub.slug || '';
+            document.getElementById('pubResumo').value = pub.resumo || '';
+            setTimeout(() => {
+              initCKEditor();
+              ckeditorInstance.setData(pub.conteudo || '');
+            }, 100);
+            document.getElementById('pubCategoria').value = pub.categoria || '';
+            document.getElementById('pubTags').value = pub.tags || '';
+            document.getElementById('pubStatus').value = pub.status || 'publicado';
+            document.getElementById('pubDataPublicacao').value = pub.data_publicacao ? pub.data_publicacao.replace(' ', 'T').slice(0,16) : '';
+            document.getElementById('pubImagemDestaque').value = pub.imagem_destaque || '';
+            document.getElementById('pubThumbnail').value = pub.thumbnail || '';
+            document.getElementById('pubAutor').value = pub.autor || '';
+          }
+        });
+    }
+
+    function remover(id) {
+      if (!confirm('Deseja remover esta publicação?')) return;
+      fetch(`/api/admin/publications/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + token }
+      }).then(() => carregarLista());
+    }
+
+    document.getElementById('btnNova').onclick = () => {
+      document.getElementById('formContainer').classList.remove('hidden');
+      document.getElementById('formTitle').textContent = 'Nova Publicação';
+      document.getElementById('formPublicacao').reset();
+      document.getElementById('pubId').value = '';
+      setTimeout(() => {
+        initCKEditor();
+        ckeditorInstance.setData('');
+      }, 100);
+    };
+
+    document.getElementById('btnCancelar').onclick = () => {
+      document.getElementById('formContainer').classList.add('hidden');
+    };
+
+    document.getElementById('formPublicacao').onsubmit = function(e) {
+      e.preventDefault();
+      const id = document.getElementById('pubId').value;
+      const data = {
+        titulo: document.getElementById('pubTitulo').value,
+        slug: document.getElementById('pubSlug').value,
+        resumo: document.getElementById('pubResumo').value,
+        conteudo: ckeditorInstance ? ckeditorInstance.getData() : document.getElementById('pubConteudo').value,
+        categoria: document.getElementById('pubCategoria').value,
+        tags: document.getElementById('pubTags').value,
+        status: document.getElementById('pubStatus').value,
+        data_publicacao: document.getElementById('pubDataPublicacao').value,
+        imagem_destaque: document.getElementById('pubImagemDestaque').value,
+        thumbnail: document.getElementById('pubThumbnail').value,
+        autor: document.getElementById('pubAutor').value
+      };
+      
+      // Remover campos vazios e desnecessários
+      Object.keys(data).forEach(key => {
+        if (data[key] === '') {
+          delete data[key];
+        }
+      });
+      
+      const url = id ? `/api/admin/publications/${id}` : '/api/admin/publications';
+      const method = id ? 'PUT' : 'POST';
+      fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify(data)
+      }).then(() => {
+        document.getElementById('formContainer').classList.add('hidden');
+        carregarLista();
+      });
+    };
+
+    setTimeout(() => {
+      initCKEditor();
+    }, 200);
+
+    carregarLista();
+    window.editar = editar;
+    window.remover = remover;
+  </script>
+</body>
+</html>

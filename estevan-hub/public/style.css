@@ -1,0 +1,574 @@
+/* ===== ESTEVAN HUB - STYLES GLOBAIS ===== */
+
+/* Animações */
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
+  /* Estrelas no background */
+  .stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+  }
+  
+  /* Cards com hover effects */
+  .service-card:hover {
+    box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
+    transform: translateY(-5px);
+  }
+  
+  .portfolio-card:hover,
+  .portfolio-mini-card:hover {
+    box-shadow: 0 25px 50px -12px rgba(124, 208, 255, 0.25);
+    transform: translateY(-5px);
+  }
+  
+  /* Slider customizado */
+  .lunar-slider::-webkit-slider-thumb {
+    appearance: none;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #36baff, #0ca5f1);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(54, 186, 255, 0.4);
+    border: 2px solid #0ca5f1;
+  }
+  
+  .lunar-slider::-moz-range-thumb {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #36baff, #0ca5f1);
+    cursor: pointer;
+    border: 2px solid #0ca5f1;
+    box-shadow: 0 4px 12px rgba(54, 186, 255, 0.4);
+  }
+  
+  .lunar-slider::-webkit-slider-track {
+    background: linear-gradient(90deg, #075985, #36baff);
+    height: 6px;
+    border-radius: 3px;
+  }
+  
+  /* Scroll personalizado */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #0f172a;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #36baff, #0ca5f1);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #7cd0ff, #36baff);
+  }
+  
+  /* Animações de entrada */
+  .fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+  
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease-out;
+  }
+  
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Gradientes especiais */
+  .text-gradient {
+    background: linear-gradient(135deg, #36baff, #0ca5f1, #7cd0ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .bg-glass {
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(124, 208, 255, 0.2);
+  }
+  
+  /* Botões com efeitos especiais */
+  .btn-primary {
+    background: linear-gradient(135deg, #0ca5f1, #36baff);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  .btn-primary:hover::before {
+    left: 100%;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(12, 165, 241, 0.4);
+  }
+  
+  /* Cards responsivos */
+  @media (max-width: 768px) {
+    .service-card,
+    .portfolio-card {
+      transform: none !important;
+    }
+    
+    .service-card:hover,
+    .portfolio-card:hover {
+      transform: none !important;
+    }
+  }
+  
+  /* Efeitos especiais para o simulador */
+  .simulator-glow {
+    box-shadow: 0 0 40px rgba(54, 186, 255, 0.3);
+  }
+  
+  .result-card {
+    background: linear-gradient(135deg, rgba(12, 165, 241, 0.1), rgba(54, 186, 255, 0.05));
+    border: 1px solid rgba(54, 186, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .result-card:hover {
+    background: linear-gradient(135deg, rgba(12, 165, 241, 0.15), rgba(54, 186, 255, 0.1));
+    border-color: rgba(54, 186, 255, 0.4);
+  }
+  
+  /* Loading spinner customizado */
+  .loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Hero section especial */
+  .hero-bg {
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(12, 165, 241, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(54, 186, 255, 0.15) 0%, transparent 50%),
+      linear-gradient(135deg, #020617 0%, #0f172a 100%);
+  }
+  
+  /* Tooltip customizado */
+  .tooltip {
+    position: relative;
+  }
+  
+  .tooltip::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(54, 186, 255, 0.3);
+  }
+  
+  .tooltip:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Progress bars */
+  .progress-bar {
+    height: 4px;
+    background: linear-gradient(90deg, #0ca5f1, #36baff);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+  
+  /* Notification styles */
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(54, 186, 255, 0.4);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: white;
+    backdrop-filter: blur(20px);
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .notification.show {
+    transform: translateX(0);
+  }
+  
+  .notification.success {
+    border-color: rgba(34, 197, 94, 0.4);
+  }
+  
+  .notification.error {
+    border-color: rgba(239, 68, 68, 0.4);
+  }
+  
+  /* Micro-interactions */
+  .interactive:hover {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+  }
+  
+  .click-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .click-effect::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s;
+  }
+  
+  .click-effect:active::after {
+    width: 300px;
+    height: 300px;
+  }
+  
+  /* Estilos específicos para portfólio */
+  .service-card {
+    transition: all 0.3s ease;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(124, 208, 255, 0.2);
+  }
+  
+  .service-card:hover {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: rgba(54, 186, 255, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
+    transform: translateY(-5px);
+  }
+  
+  .portfolio-card {
+    transition: all 0.3s ease;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(124, 208, 255, 0.2);
+  }
+  
+  .portfolio-card:hover {
+    box-shadow: 0 25px 50px -12px rgba(124, 208, 255, 0.25);
+    transform: translateY(-5px);
+  }
+  
+  .portfolio-mini-card {
+    transition: all 0.3s ease;
+    background: rgba(30, 41, 59, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(124, 208, 255, 0.2);
+  }
+  
+  .portfolio-mini-card:hover {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: rgba(54, 186, 255, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(124, 208, 255, 0.25);
+    transform: translateY(-5px);
+  }
+  
+  /* Counters animation */
+  .counter {
+    transition: all 0.3s ease;
+  }
+  
+  /* Testimonials */
+  .testimonial-card {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(124, 208, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .testimonial-card:hover {
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(54, 186, 255, 0.3);
+  }
+  
+  /* Tags de tecnologia */
+  .tech-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid;
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Project highlights */
+  .project-highlight {
+    background: linear-gradient(135deg, rgba(12, 165, 241, 0.1), rgba(54, 186, 255, 0.05));
+    border: 1px solid rgba(54, 186, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .project-highlight:hover {
+    background: linear-gradient(135deg, rgba(12, 165, 241, 0.15), rgba(54, 186, 255, 0.1));
+    border-color: rgba(54, 186, 255, 0.4);
+  }
+  
+  /* Stats animations */
+  @keyframes countUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .stats-card {
+    animation: countUp 0.6s ease-out;
+  }
+  
+  /* Estilos para WhatsApp Options */
+  .whatsapp-option {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .whatsapp-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  
+  .whatsapp-option:hover::before {
+    left: 100%;
+  }
+  
+  .whatsapp-option.selected {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
+  }
+  
+  .whatsapp-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Animações especiais para notícias */
+  .news-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .news-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    transition: left 0.6s;
+  }
+  
+  .news-card:hover::before {
+    left: 100%;
+  }
+  
+  .news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+  
+  @keyframes newsCardLoad {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .news-card {
+    animation: newsCardLoad 0.6s ease-out;
+  }
+  
+  /* Gradiente animado para botões especiais */
+  .gradient-button {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+  
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Estilos para métricas de resultado */
+  .results-metric-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    backdrop-filter: blur(15px);
+    transition: all 0.3s ease;
+  }
+  
+  .results-metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  }
+  
+  .metric-highlight {
+    background: linear-gradient(135deg, rgba(54, 186, 255, 0.1), rgba(12, 165, 241, 0.05));
+    border: 1px solid rgba(54, 186, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .metric-highlight:hover {
+    border-color: rgba(54, 186, 255, 0.4);
+    background: linear-gradient(135deg, rgba(54, 186, 255, 0.15), rgba(12, 165, 241, 0.1));
+  }
+  
+  /* Gradientes específicos por categoria */
+  .gradient-emerald { background: linear-gradient(135deg, #10b981, #059669); }
+  .gradient-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+  .gradient-orange { background: linear-gradient(135deg, #f97316, #ea580c); }
+  .gradient-cyan { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+  .gradient-pink { background: linear-gradient(135deg, #ec4899, #db2777); }
+  
+  /* Responsive adjustments for portfolio */
+  @media (max-width: 768px) {
+    .portfolio-card,
+    .portfolio-mini-card,
+    .service-card {
+      transform: none !important;
+    }
+    
+    .portfolio-card:hover,
+    .portfolio-mini-card:hover,
+    .service-card:hover {
+      transform: none !important;
+    }
+  
+    .grid-cols-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .whatsapp-option {
+      padding: 1rem;
+    }
+    
+    .whatsapp-option .flex {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+    }
+    
+    .news-card {
+      margin-bottom: 1.5rem;
+    }
+  
+    .results-metric-card {
+      padding: 1rem;
+    }
+    
+    .metric-highlight {
+      margin-bottom: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .grid-cols-4 {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Efeitos de hover para ícones */
+  .icon-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .icon-hover:hover {
+    transform: rotate(5deg) scale(1.1);
+  }
+  
