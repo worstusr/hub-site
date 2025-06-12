@@ -158,9 +158,39 @@ class EstevanHub {
       return;
     }
 
-    const noticiasHTML = noticias.slice(0, 3).map(noticia => {
+    // Função igual à usada em noticia.html e index.html para garantir thumbnail
+    function normalizeImagePath(path, title) {
+      if (!path) {
+        const colors = ['#0ca5f1', '#0369a1', '#0284ce', '#36baff', '#075985'];
+        let hash = 0;
+        for (let i = 0; i < (title || '').length; i++) {
+          hash = title.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const color = colors[Math.abs(hash) % colors.length];
+        const initial = (title || '?').charAt(0).toUpperCase();
+        return `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 600 400' %3E%3Crect fill='${color.replace('#', '%23')}' width='600' height='400'/%3E%3Ctext fill='white' font-family='Arial' font-size='180' font-weight='bold' x='50%25' y='52%25' text-anchor='middle' dominant-baseline='middle'%3E${initial}%3C/text%3E%3C/svg%3E`;
+      }
+      if (path.startsWith('http://') || path.startsWith('https://')) {
+        return path;
+      }
+      if (path.startsWith('/')) {
+        return path;
+      }
+      return '/' + path;
+    }
+
+    // Render cards com thumbnail igual "Artigos Relacionados"
+    const noticiasHTML = noticias.slice(0, 6).map(noticia => {
+      const thumbnailUrl = normalizeImagePath(noticia.thumbnail || noticia.imagem_destaque, noticia.titulo);
+      const thumbnailHtml = thumbnailUrl
+        ? `<div class="mb-4 overflow-hidden rounded-xl">
+            <img src="${thumbnailUrl}" alt="${noticia.titulo}" 
+              class="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105">
+          </div>`
+        : '';
       return `
         <div class="bg-night-800/80 p-6 rounded-2xl border border-lunar-700/50 group hover:border-lunar-400/70 transition-all duration-300 shadow-lg flex flex-col h-full">
+          ${thumbnailHtml}
           <div class="flex items-center gap-3 mb-3">
             <div class="text-xs text-lunar-400">${noticia.data_formatada || ''}</div>
           </div>

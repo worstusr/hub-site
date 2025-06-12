@@ -2,224 +2,861 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gerenciar Publicações - Estevan Hub</title>
   <link rel="stylesheet" href="/css/style.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 </head>
-<body class="bg-night-950 min-h-screen p-8">
-  <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow p-8">
-    <h1 class="text-2xl font-bold mb-6">Gerenciar Publicações</h1>
-    <button id="btnNova" class="btn-primary px-4 py-2 rounded mb-6">Nova Publicação</button>
-    <div id="listaPublicacoes"></div>
-    <div id="formContainer" class="hidden mt-8">
-      <h2 class="text-xl font-bold mb-4" id="formTitle">Nova Publicação</h2>
-      <form id="formPublicacao" class="space-y-4">
-        <input type="hidden" id="pubId">
+<body class="bg-gray-100 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center">
+        <a href="/admin/dashboard.html" class="text-blue-600 hover:text-blue-800 mr-4">
+          <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </a>
+        <h1 class="text-2xl font-bold text-blue-600 flex items-center gap-2">
+          <i data-lucide="file-text" class="w-6 h-6"></i>
+          <span id="pageTitle">Nova Publicação</span>
+        </h1>
+      </div>
+      <div id="articleStatusDisplay" class="hidden px-3 py-1 rounded text-xs bg-yellow-100 text-yellow-800">
+        Rascunho
+      </div>
+    </div>
+  </header>
+
+  <!-- Mensagens de feedback -->
+  <div id="feedbackContainer" class="container mx-auto mt-4 px-4 hidden">
+    <div id="successMessage" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 hidden" role="alert">
+      <div class="flex">
+        <div class="py-1"><i data-lucide="check-circle" class="w-5 h-5 mr-3"></i></div>
         <div>
-          <label class="block font-semibold mb-1">Título</label>
-          <input type="text" id="pubTitulo" placeholder="Título do artigo" class="w-full border rounded p-2" required>
+          <p class="font-bold">Sucesso!</p>
+          <p>Publicação salva com sucesso.</p>
         </div>
+      </div>
+    </div>
+    <div id="errorMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 hidden" role="alert">
+      <div class="flex">
+        <div class="py-1"><i data-lucide="alert-triangle" class="w-5 h-5 mr-3"></i></div>
         <div>
-          <label class="block font-semibold mb-1">Slug (URL)</label>
-          <input type="text" id="pubSlug" placeholder="exemplo-de-slug" class="w-full border rounded p-2" required>
+          <p class="font-bold">Erro!</p>
+          <p id="errorText">Ocorreu um erro ao salvar a publicação.</p>
         </div>
-        <div>
-          <label class="block font-semibold mb-1">Resumo</label>
-          <textarea id="pubResumo" placeholder="Resumo curto para listagem e SEO" class="w-full border rounded p-2" rows="2"></textarea>
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Conteúdo</label>
-          <textarea id="pubConteudo" placeholder="Escreva o artigo completo aqui..." class="w-full border rounded p-2"></textarea>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block font-semibold mb-1">Categoria</label>
-            <input type="text" id="pubCategoria" placeholder="Ex: Marketing Digital" class="w-full border rounded p-2">
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulário principal -->
+  <form id="formPublicacao" class="container mx-auto pt-6 pb-20 px-4">
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Coluna 1 - Dados principais -->
+      <div class="md:col-span-2 space-y-6">
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <!-- Título -->
+          <div class="mb-6">
+            <label class="block font-medium text-gray-700 mb-2 required">Título</label>
+            <input type="text" id="pubTitulo" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
           </div>
-          <div>
-            <label class="block font-semibold mb-1">Status</label>
-            <select id="pubStatus" class="w-full border rounded p-2">
+          
+          <!-- Slug -->
+          <div class="mb-6">
+            <label class="block font-medium text-gray-700 mb-2 required">Slug (URL)</label>
+            <div class="flex">
+              <span class="inline-flex items-center px-3 text-gray-500 bg-gray-100 rounded-l-lg border border-r-0 border-gray-300">
+                /noticia/
+              </span>
+              <input type="text" id="pubSlug" class="flex-1 p-3 border border-gray-300 rounded-r-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+            </div>
+            <p class="mt-1 text-sm text-gray-500">URL amigável (apenas letras, números e hífen)</p>
+          </div>
+
+          <!-- Resumo -->
+          <div class="mb-6">
+            <label class="block font-medium text-gray-700 mb-2">Resumo</label>
+            <textarea id="pubResumo" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+            <p class="mt-1 text-sm text-gray-500">Breve descrição para SEO e listagens (recomendado)</p>
+          </div>
+
+          <!-- Editor -->
+          <div class="mb-6">
+            <label class="block font-medium text-gray-700 mb-2 required">Conteúdo</label>
+            <div class="border border-gray-300 rounded-lg">
+              <div id="editorContainer">
+                <textarea id="pubConteudo"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna 2 - Configurações e mídia -->
+      <div class="space-y-6">
+        <!-- Ações -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <div class="mb-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Ações</h3>
+            <div class="flex flex-wrap gap-3">
+              <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg flex items-center gap-2 flex-grow">
+                <i data-lucide="save" class="w-5 h-5"></i>
+                <span>Salvar Publicação</span>
+              </button>
+              <button type="button" id="btnPreview" class="bg-purple-600 hover:bg-purple-700 text-white px-5 py-3 rounded-lg flex items-center gap-2">
+                <i data-lucide="eye" class="w-5 h-5"></i>
+                <span>Preview</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Status</h3>
+            <select id="pubStatus" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
               <option value="publicado">Publicado</option>
               <option value="rascunho">Rascunho</option>
               <option value="removido">Removido</option>
             </select>
           </div>
         </div>
-        <div>
-          <label class="block font-semibold mb-1">Tags</label>
-          <input type="text" id="pubTags" placeholder="Ex: marketing,vendas,negócios" class="w-full border rounded p-2">
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block font-semibold mb-1">Data de Publicação</label>
-            <input type="datetime-local" id="pubDataPublicacao" class="w-full border rounded p-2">
+
+        <!-- Imagens -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-bold text-gray-800 mb-4">Imagens</h3>
+
+          <!-- Imagem de Destaque -->
+          <div class="mb-6">
+            <label class="block font-medium text-gray-700 mb-2">Imagem de Destaque</label>
+            <div id="featuredImageDropzone" class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition cursor-pointer">
+              <input type="file" id="featuredImageInput" class="hidden" accept="image/*">
+              <div id="featuredImagePlaceholder">
+                <i data-lucide="image-plus" class="w-12 h-12 mx-auto mb-4 text-gray-400"></i>
+                <p class="text-gray-500">Arraste uma imagem aqui ou clique para fazer upload</p>
+              </div>
+              <div id="featuredImagePreviewContainer" class="hidden">
+                <img id="featuredImagePreview" class="mx-auto max-h-48 rounded mb-2" alt="Imagem de destaque">
+                <button type="button" id="removeFeaturedImage" class="text-red-500 hover:text-red-700">
+                  <i data-lucide="trash-2" class="w-4 h-4 inline mr-1"></i>Remover
+                </button>
+              </div>
+              <input type="hidden" id="pubImagemDestaque">
+              <div id="featuredImageProgress" class="mt-2 hidden">
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div id="featuredImageProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="featuredImageStatus" class="mt-1 text-sm text-gray-500">Enviando...</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <label class="block font-semibold mb-1">Imagem de Destaque (URL)</label>
-            <input type="text" id="pubImagemDestaque" placeholder="URL da imagem principal" class="w-full border rounded p-2">
+
+          <!-- Thumbnail -->
+          <div class="mb-6">
+            <label class="block font-medium text-gray-700 mb-2">Thumbnail</label>
+            <div id="thumbnailDropzone" class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition cursor-pointer"></div>
+              <input type="file" id="thumbnailInput" class="hidden" accept="image/*">
+              <div id="thumbnailPlaceholder">
+                <i data-lucide="image" class="w-10 h-10 mx-auto mb-4 text-gray-400"></i>
+                <p class="text-gray-500">Arraste uma imagem aqui ou clique para fazer upload</p>
+              </div>
+              <div id="thumbnailPreviewContainer" class="hidden">
+                <img id="thumbnailPreview" class="mx-auto max-h-32 rounded mb-2" alt="Thumbnail">
+                <button type="button" id="removeThumbnail" class="text-red-500 hover:text-red-700">
+                  <i data-lucide="trash-2" class="w-4 h-4 inline mr-1"></i>Remover
+                </button>
+              </div>
+              <input type="hidden" id="pubThumbnail">
+              <div id="thumbnailProgress" class="mt-2 hidden">
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                  <div id="thumbnailProgressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="thumbnailStatus" class="mt-1 text-sm text-gray-500">Enviando...</p>
+              </div>
+            </div>
           </div>
         </div>
-        <div>
-          <label class="block font-semibold mb-1">Thumbnail (URL)</label>
-          <input type="text" id="pubThumbnail" placeholder="URL da thumbnail (opcional)" class="w-full border rounded p-2">
+
+        <!-- Metadados -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+          <h3 class="text-lg font-bold text-gray-800 mb-4">Metadados</h3>
+
+          <!-- Categoria -->
+          <div class="mb-4">
+            <label class="block font-medium text-gray-700 mb-2">Categoria</label>
+            <input type="text" id="pubCategoria" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          </div>
+
+          <!-- Tags -->
+          <div class="mb-4">
+            <label class="block font-medium text-gray-700 mb-2">Tags</label>
+            <input type="text" id="pubTags" placeholder="marketing,digital,inovação" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            <p class="mt-1 text-sm text-gray-500">Separadas por vírgula</p>
+          </div>
+
+          <!-- Autor -->
+          <div class="mb-4">
+            <label class="block font-medium text-gray-700 mb-2">Autor</label>
+            <input type="text" id="pubAutor" value="Equipe Estevan Hub" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          </div>
+
+          <!-- Campo oculto para ID -->
+          <input type="hidden" id="pubId">
         </div>
-        <div>
-          <label class="block font-semibold mb-1">Autor</label>
-          <input type="text" id="pubAutor" placeholder="Nome do autor" class="w-full border rounded p-2">
-        </div>
-        <div class="flex gap-4">
-          <button type="submit" class="btn-primary px-6 py-2 rounded">Salvar</button>
-          <button type="button" id="btnCancelar" class="px-6 py-2 rounded border border-lunar-400 text-lunar-500">Cancelar</button>
-        </div>
-      </form>
+      </div>
+    </div>
+  </form>
+
+  <!-- Modal de Preview -->
+  <div id="previewModal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto">
+      <div class="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+        <h3 class="text-lg font-bold">Preview da Publicação</h3>
+        <button id="closePreview" class="text-gray-400 hover:text-gray-600">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="previewContent" class="p-6 prose max-w-none">
+        <!-- Conteúdo do preview -->
+      </div>
     </div>
   </div>
+
   <script>
+    // Verificar autenticação
     const token = localStorage.getItem('admin_token');
     if (!token) window.location.href = '/admin/login.html';
 
-    function carregarLista() {
-      fetch('/api/admin/publications', { headers: { Authorization: 'Bearer ' + token } })
-        .then(r => r.json())
-        .then(list => {
-          document.getElementById('listaPublicacoes').innerHTML = `
-            <table class="min-w-full text-sm mb-6">
-              <thead>
-                <tr>
-                  <th class="text-left p-2">Título</th>
-                  <th class="text-left p-2">Slug</th>
-                  <th class="text-left p-2">Categoria</th>
-                  <th class="text-left p-2">Status</th>
-                  <th class="text-left p-2">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${list.map(pub => `
-                  <tr>
-                    <td class="p-2">${pub.titulo}</td>
-                    <td class="p-2">${pub.slug}</td>
-                    <td class="p-2">${pub.categoria || ''}</td>
-                    <td class="p-2">${pub.status || 'publicado'}</td>
-                    <td class="p-2 flex gap-2">
-                      <button onclick="editar(${pub.id})" class="text-lunar-500">Editar</button>
-                      <button onclick="remover(${pub.id})" class="text-red-500">Remover</button>
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          `;
+    let ckeditorInstance = null;
+    let currentId = null;
+
+    // Iniciar icons
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+
+    // Função para criar o editor
+    function createEditor(initialData = '') {
+      ClassicEditor
+        .create(document.getElementById('pubConteudo'), {
+          toolbar: {
+            items: [
+              'heading',
+              '|',
+              'bold',
+              'italic',
+              'link',
+              'bulletedList',
+              'numberedList',
+              '|',
+              'outdent',
+              'indent',
+              '|',
+              'imageUpload',
+              'blockQuote',
+              'insertTable',
+              'mediaEmbed',
+              'undo',
+              'redo'
+            ]
+          },
+          heading: {
+            options: [
+              { model: 'paragraph', title: 'Parágrafo', class: 'ck-heading_paragraph' },
+              { model: 'heading1', view: 'h1', title: 'Título 1', class: 'ck-heading_heading1' },
+              { model: 'heading2', view: 'h2', title: 'Título 2', class: 'ck-heading_heading2' },
+              { model: 'heading3', view: 'h3', title: 'Título 3', class: 'ck-heading_heading3' },
+              { model: 'heading4', view: 'h4', title: 'Título 4', class: 'ck-heading_heading4' }
+            ]
+          },
+          image: {
+            toolbar: ['imageTextAlternative', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side']
+          },
+          table: {
+            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+          }
+        })
+        .then(editor => {
+          ckeditorInstance = editor;
+          
+          // Configurar o adaptador de upload customizado
+          editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return new MyUploadAdapter(loader, token);
+          };
+
+          if (initialData) {
+            editor.setData(initialData);
+          }
+          
+          // Adicionar handler para evitar erros de upload silenciosos
+          editor.plugins.get('FileRepository').on('uploadFailed', (evt, { error, fileLoader }) => {
+            if (error) {
+              console.error('Upload error:', error);
+              showError('Erro no upload: ' + (error.message || 'Falha ao enviar imagem'));
+            }
+          });
+        })
+        .catch(error => {
+          console.error('Error in editor initialization:', error);
+          showError('Erro ao inicializar o editor');
         });
     }
 
-    let ckeditorInstance;
-    function initCKEditor() {
-      if (ckeditorInstance) {
-        ckeditorInstance.destroy().then(() => {
-          ClassicEditor.create(document.getElementById('pubConteudo'))
-            .then(editor => { ckeditorInstance = editor; });
+    // Classe para upload de imagens no CKEditor
+    class MyUploadAdapter {
+      constructor(loader, authToken) {
+        this.loader = loader;
+        this.authToken = authToken;
+      }
+
+      upload() {
+        return this.loader.file.then(file => {
+          return new Promise((resolve, reject) => {
+            const data = new FormData();
+            data.append('file', file);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/admin/upload', true);
+            xhr.setRequestHeader('Authorization', 'Bearer ' + this.authToken);
+            
+            // Setup upload progress
+            xhr.upload.addEventListener('progress', evt => {
+              if (evt.lengthComputable) {
+                this.loader.uploadTotal = evt.total;
+                this.loader.uploaded = evt.loaded;
+              }
+            });
+            
+            // Handle response
+            xhr.addEventListener('load', () => {
+              if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                  const response = JSON.parse(xhr.responseText);
+                  if (!response.success) {
+                    reject(response.error || 'Upload failed');
+                    return;
+                  }
+                  resolve({
+                    default: response.url
+                  });
+                } catch (e) {
+                  reject('Invalid server response');
+                }
+              } else {
+                reject('Upload failed');
+              }
+            });
+            
+            // Handle errors
+            xhr.addEventListener('error', () => reject('Network error'));
+            xhr.addEventListener('abort', () => reject('Upload aborted'));
+            
+            xhr.send(data);
+          });
         });
-      } else {
-        ClassicEditor.create(document.getElementById('pubConteudo'))
-          .then(editor => { ckeditorInstance = editor; });
+      }
+
+      abort() {
+        // This is called when the upload is aborted
       }
     }
 
-    function editar(id) {
-      fetch('/api/admin/publications', { headers: { Authorization: 'Bearer ' + token } })
-        .then(r => r.json())
-        .then(list => {
-          const pub = list.find(p => p.id == id);
-          if (pub) {
-            document.getElementById('formContainer').classList.remove('hidden');
-            document.getElementById('formTitle').textContent = 'Editar Publicação';
-            document.getElementById('formPublicacao').reset();
-            document.getElementById('pubId').value = pub.id;
-            document.getElementById('pubTitulo').value = pub.titulo || '';
-            document.getElementById('pubSlug').value = pub.slug || '';
-            document.getElementById('pubResumo').value = pub.resumo || '';
-            setTimeout(() => {
-              initCKEditor();
-              ckeditorInstance.setData(pub.conteudo || '');
-            }, 100);
-            document.getElementById('pubCategoria').value = pub.categoria || '';
-            document.getElementById('pubTags').value = pub.tags || '';
-            document.getElementById('pubStatus').value = pub.status || 'publicado';
-            document.getElementById('pubDataPublicacao').value = pub.data_publicacao ? pub.data_publicacao.replace(' ', 'T').slice(0,16) : '';
-            document.getElementById('pubImagemDestaque').value = pub.imagem_destaque || '';
-            document.getElementById('pubThumbnail').value = pub.thumbnail || '';
-            document.getElementById('pubAutor').value = pub.autor || '';
-          }
-        });
-    }
-
-    function remover(id) {
-      if (!confirm('Deseja remover esta publicação?')) return;
-      fetch(`/api/admin/publications/${id}`, {
-        method: 'DELETE',
-        headers: { Authorization: 'Bearer ' + token }
-      }).then(() => carregarLista());
-    }
-
-    document.getElementById('btnNova').onclick = () => {
-      document.getElementById('formContainer').classList.remove('hidden');
-      document.getElementById('formTitle').textContent = 'Nova Publicação';
-      document.getElementById('formPublicacao').reset();
-      document.getElementById('pubId').value = '';
-      setTimeout(() => {
-        initCKEditor();
-        ckeditorInstance.setData('');
-      }, 100);
-    };
-
-    document.getElementById('btnCancelar').onclick = () => {
-      document.getElementById('formContainer').classList.add('hidden');
-    };
-
-    document.getElementById('formPublicacao').onsubmit = function(e) {
-      e.preventDefault();
-      const id = document.getElementById('pubId').value;
-      const data = {
-        titulo: document.getElementById('pubTitulo').value,
-        slug: document.getElementById('pubSlug').value,
-        resumo: document.getElementById('pubResumo').value,
-        conteudo: ckeditorInstance ? ckeditorInstance.getData() : document.getElementById('pubConteudo').value,
-        categoria: document.getElementById('pubCategoria').value,
-        tags: document.getElementById('pubTags').value,
-        status: document.getElementById('pubStatus').value,
-        data_publicacao: document.getElementById('pubDataPublicacao').value,
-        imagem_destaque: document.getElementById('pubImagemDestaque').value,
-        thumbnail: document.getElementById('pubThumbnail').value,
-        autor: document.getElementById('pubAutor').value
-      };
+    // Carregar publicação para edição se houver ID na URL
+    window.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
       
-      // Remover campos vazios e desnecessários
-      Object.keys(data).forEach(key => {
-        if (data[key] === '') {
-          delete data[key];
+      createEditor();
+      
+      if (id) {
+        loadPublication(id);
+      }
+      
+      setupImageUpload();
+    });
+
+    // Função para carregar uma publicação existente
+    async function loadPublication(id) {
+      try {
+        const response = await fetch('/api/admin/publications', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        
+        if (!response.ok) throw new Error('Erro ao carregar publicações');
+        
+        const publications = await response.json();
+        const publication = publications.find(p => p.id == id);
+        
+        if (!publication) throw new Error('Publicação não encontrada');
+        
+        // Atualizar título da página
+        document.getElementById('pageTitle').textContent = 'Editar Publicação';
+        
+        // Preencher formulário
+        currentId = publication.id;
+        document.getElementById('pubId').value = publication.id;
+        document.getElementById('pubTitulo').value = publication.titulo || '';
+        document.getElementById('pubSlug').value = publication.slug || '';
+        document.getElementById('pubResumo').value = publication.resumo || '';
+        document.getElementById('pubCategoria').value = publication.categoria || '';
+        document.getElementById('pubTags').value = publication.tags || '';
+        document.getElementById('pubStatus').value = publication.status || 'publicado';
+        document.getElementById('pubAutor').value = publication.autor || 'Equipe Estevan Hub';
+        document.getElementById('pubImagemDestaque').value = publication.imagem_destaque || '';
+        document.getElementById('pubThumbnail').value = publication.thumbnail || '';
+        
+        // Se tiver instância do editor, atualizar dados
+        if (ckeditorInstance) {
+          ckeditorInstance.setData(publication.conteudo || '');
+        } else {
+          // Se ainda não tiver instância, criar com os dados
+          createEditor(publication.conteudo);
+        }
+        
+        // Atualizar status display
+        updateStatusDisplay(publication.status);
+        
+        // Mostrar previews de imagens
+        if (publication.imagem_destaque) {
+          document.getElementById('featuredImagePreview').src = publication.imagem_destaque;
+          document.getElementById('featuredImagePlaceholder').classList.add('hidden');
+          document.getElementById('featuredImagePreviewContainer').classList.remove('hidden');
+        }
+        
+        if (publication.thumbnail) {
+          document.getElementById('thumbnailPreview').src = publication.thumbnail;
+          document.getElementById('thumbnailPlaceholder').classList.add('hidden');
+          document.getElementById('thumbnailPreviewContainer').classList.remove('hidden');
+        }
+      } catch (error) {
+        showError(error.message);
+      }
+    }
+
+    // Função para configurar upload de imagens
+    function setupImageUpload() {
+      // Configurar dropzone para imagem de destaque
+      setupDropzone(
+        'featuredImageDropzone',
+        'featuredImageInput',
+        'featuredImagePreview',
+        'featuredImagePreviewContainer',
+        'featuredImagePlaceholder',
+        'featuredImageProgress',
+        'featuredImageProgressBar',
+        'featuredImageStatus',
+        'pubImagemDestaque',
+        'removeFeaturedImage'
+      );
+      
+      // Configurar dropzone para thumbnail
+      setupDropzone(
+        'thumbnailDropzone',
+        'thumbnailInput',
+        'thumbnailPreview',
+        'thumbnailPreviewContainer',
+        'thumbnailPlaceholder',
+        'thumbnailProgress',
+        'thumbnailProgressBar',
+        'thumbnailStatus',
+        'pubThumbnail',
+        'removeThumbnail'
+      );
+    }
+
+    // Função para configurar um dropzone
+    function setupDropzone(dropzoneId, inputId, previewId, previewContainerId, placeholderId, progressId, progressBarId, statusId, hiddenInputId, removeButtonId) {
+      const dropzone = document.getElementById(dropzoneId);
+      const input = document.getElementById(inputId);
+      const preview = document.getElementById(previewId);
+      const previewContainer = document.getElementById(previewContainerId);
+      const placeholder = document.getElementById(placeholderId);
+      const progress = document.getElementById(progressId);
+      const progressBar = document.getElementById(progressBarId);
+      const status = document.getElementById(statusId);
+      const hiddenInput = document.getElementById(hiddenInputId);
+      const removeButton = document.getElementById(removeButtonId);
+      
+      // Click no dropzone abre o input de arquivo
+      dropzone.addEventListener('click', function() {
+        input.click();
+      });
+      
+      // Drag & drop
+      dropzone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.add('border-blue-400', 'bg-blue-50/10');
+      });
+      
+      dropzone.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.remove('border-blue-400', 'bg-blue-50/10');
+      });
+      
+      dropzone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.remove('border-blue-400', 'bg-blue-50/10');
+        
+        if (e.dataTransfer.files && e.dataTransfer.files.length) {
+          input.files = e.dataTransfer.files;
+          handleFileUpload();
         }
       });
       
-      const url = id ? `/api/admin/publications/${id}` : '/api/admin/publications';
-      const method = id ? 'PUT' : 'POST';
-      fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-        body: JSON.stringify(data)
-      }).then(() => {
-        document.getElementById('formContainer').classList.add('hidden');
-        carregarLista();
+      // Seleção de arquivo
+      input.addEventListener('change', handleFileUpload);
+      
+      // Botão para remover imagem
+      removeButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        hiddenInput.value = '';
+        placeholder.classList.remove('hidden');
+        previewContainer.classList.add('hidden');
       });
-    };
+      
+      // Função para lidar com upload
+      function handleFileUpload() {
+        if (!input.files || !input.files[0]) return;
+        
+        const file = input.files[0];
+        
+        // Validar tamanho (10MB max)
+        if (file.size > 10 * 1024 * 1024) {
+          showError('Arquivo muito grande! Tamanho máximo é 10MB.');
+          input.value = '';
+          return;
+        }
+        
+        // Validar tipo
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+        if (!allowedTypes.includes(file.type)) {
+          showError('Tipo de arquivo não permitido! Envie apenas imagens (JPG, PNG, GIF, WEBP, SVG).');
+          input.value = '';
+          return;
+        }
+        
+        // Mostrar preview imediato
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          placeholder.classList.add('hidden');
+          previewContainer.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+        
+        // Preparar upload
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        // Mostrar barra de progresso
+        progress.classList.remove('hidden');
+        progressBar.style.width = '0%';
+        status.textContent = 'Iniciando upload...';
+        
+        // Criar XMLHttpRequest para poder monitorar progresso
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/admin/upload', true);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        
+        // Monitorar progresso
+        xhr.upload.addEventListener('progress', function(e) {
+          if (e.lengthComputable) {
+            const percentComplete = (e.loaded / e.total) * 100;
+            progressBar.style.width = percentComplete + '%';
+            status.textContent = `Enviando... ${Math.round(percentComplete)}%`;
+          }
+        });
+        
+        // Completado
+        xhr.onload = function() {
+          if (xhr.status === 200) {
+            try {
+              const response = JSON.parse(xhr.responseText);
+              if (response.success) {
+                hiddenInput.value = response.url;
+                status.textContent = 'Upload concluído com sucesso!';
+                progressBar.style.width = '100%';
+                
+                // Ocultar barra depois de alguns segundos
+                setTimeout(function() {
+                  progress.classList.add('hidden');
+                }, 2000);
+              } else {
+                status.textContent = response.error || 'Erro durante o upload.';
+                progressBar.style.width = '0%';
+              }
+            } catch (error) {
+              status.textContent = 'Erro ao processar resposta do servidor.';
+              progressBar.style.width = '0%';
+            }
+          } else {
+            status.textContent = 'Erro no servidor durante o upload.';
+            progressBar.style.width = '0%';
+          }
+        };
+        
+        // Erro
+        xhr.onerror = function() {
+          status.textContent = 'Erro de rede durante o upload.';
+          progressBar.style.width = '0%';
+        };
+        
+        xhr.send(formData);
+      }
+    }
 
-    setTimeout(() => {
-      initCKEditor();
-    }, 200);
+    // Função para atualizar display do status
+    function updateStatusDisplay(status) {
+      const display = document.getElementById('articleStatusDisplay');
+      
+      if (status === 'publicado') {
+        display.classList.add('hidden');
+      } else {
+        display.classList.remove('hidden');
+        display.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        
+        // Atualizar cores baseado no status
+        if (status === 'rascunho') {
+          display.className = 'px-3 py-1 rounded text-xs bg-yellow-100 text-yellow-800';
+        } else if (status === 'removido') {
+          display.className = 'px-3 py-1 rounded text-xs bg-red-100 text-red-800';
+        }
+      }
+    }
 
-    carregarLista();
-    window.editar = editar;
-    window.remover = remover;
+    // Gerar slug a partir do título
+    document.getElementById('pubTitulo').addEventListener('blur', function() {
+      const slugField = document.getElementById('pubSlug');
+      if (!slugField.value) {
+        const title = this.value;
+        const slug = title
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+          .replace(/[^a-z0-9]+/g, '-')    // Substitui caracteres especiais por hífen
+          .replace(/^-+|-+$/g, '');       // Remove hífens no início e fim
+        
+        slugField.value = slug;
+      }
+    });
+
+    // Preview da publicação
+    document.getElementById('btnPreview').addEventListener('click', function() {
+      if (!ckeditorInstance) return;
+      
+      const title = document.getElementById('pubTitulo').value || 'Sem título';
+      const content = ckeditorInstance.getData();
+      
+      document.getElementById('previewContent').innerHTML = `
+        <h1>${title}</h1>
+        ${content}
+      `;
+      
+      document.getElementById('previewModal').classList.remove('hidden');
+    });
+
+    // Fechar preview
+    document.getElementById('closePreview').addEventListener('click', function() {
+      document.getElementById('previewModal').classList.add('hidden');
+    });
+
+    // Salvar publicação
+    document.getElementById('formPublicacao').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Validação básica
+      const titulo = document.getElementById('pubTitulo').value.trim();
+      const slug = document.getElementById('pubSlug').value.trim();
+      
+      if (!titulo || !slug) {
+        showError('Título e slug são obrigatórios.');
+        return;
+      }
+      
+      // Preparar dados
+      const data = {
+        titulo,
+        slug,
+        resumo: document.getElementById('pubResumo').value.trim(),
+        conteudo: ckeditorInstance ? ckeditorInstance.getData() : document.getElementById('pubConteudo').value,
+        categoria: document.getElementById('pubCategoria').value.trim(),
+        tags: document.getElementById('pubTags').value.trim(),
+        status: document.getElementById('pubStatus').value,
+        imagem_destaque: document.getElementById('pubImagemDestaque').value,
+        thumbnail: document.getElementById('pubThumbnail').value,
+        autor: document.getElementById('pubAutor').value.trim() || 'Equipe Estevan Hub'
+      };
+      
+      try {
+        const id = document.getElementById('pubId').value;
+        const url = id ? `/api/admin/publications/${id}` : '/api/admin/publications';
+        const method = id ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showSuccess('Publicação salva com sucesso!');
+          
+          // Se for uma publicação nova, redirecionar para página de edição
+          if (!id && result.id) {
+            setTimeout(() => {
+              window.location.href = `/admin/crud-publicacao.html?id=${result.id}`;
+            }, 1500);
+          } else if (!id) {
+            // Se não tiver id na resposta mas foi sucesso, recarregar a página
+            setTimeout(() => {
+              window.location.href = '/admin/dashboard.html';
+            }, 1500);
+          }
+          
+          // Atualizar status display
+          updateStatusDisplay(data.status);
+        } else {
+          showError(result.error || 'Erro ao salvar publicação.');
+        }
+      } catch (error) {
+        showError('Erro ao enviar dados: ' + error.message);
+      }
+    });
+
+    // Mostrar mensagem de erro
+    function showError(message) {
+      const container = document.getElementById('feedbackContainer');
+      const errorContainer = document.getElementById('errorMessage');
+      const errorText = document.getElementById('errorText');
+      
+      container.classList.remove('hidden');
+      errorContainer.classList.remove('hidden');
+      document.getElementById('successMessage').classList.add('hidden');
+      
+      errorText.textContent = message;
+      
+      // Scroll para cima para garantir que mensagem seja vista
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Auto-ocultar após 5 segundos
+      setTimeout(() => {
+        errorContainer.classList.add('hidden');
+        
+        // Se não tiver mais mensagens, ocultar o container
+        if (document.getElementById('successMessage').classList.contains('hidden')) {
+          container.classList.add('hidden');
+        }
+      }, 5000);
+    }
+
+    // Mostrar mensagem de sucesso
+    function showSuccess(message) {
+      const container = document.getElementById('feedbackContainer');
+      const successContainer = document.getElementById('successMessage');
+      
+      container.classList.remove('hidden');
+      successContainer.classList.remove('hidden');
+      document.getElementById('errorMessage').classList.add('hidden');
+      
+      // Scroll para cima para garantir que mensagem seja vista
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Auto-ocultar após 3 segundos
+      setTimeout(() => {
+        successContainer.classList.add('hidden');
+        
+        // Se não tiver mais mensagens, ocultar o container
+        if (document.getElementById('errorMessage').classList.contains('hidden')) {
+          container.classList.add('hidden');
+        }
+      }, 3000);
+    }
+
+    // Monitorar mudanças de status
+    document.getElementById('pubStatus').addEventListener('change', function() {
+      updateStatusDisplay(this.value);
+    });
   </script>
+
+  <style>
+    .required:after {
+      content: "*";
+      color: #ef4444;
+      margin-left: 0.25rem;
+    }
+    
+    /* Estilos para o editor */
+    .ck-editor__editable {
+      min-height: 400px;
+      max-height: 600px;
+    }
+    
+    /* Estilo para o conteúdo de preview */
+    .prose {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #333;
+    }
+    
+    .prose h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #1e40af;
+    }
+    
+    .prose h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: #1e40af;
+    }
+    
+    .prose h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: #1e40af;
+    }
+    
+    .prose p {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .prose img {
+      max-width: 100%;
+      height: auto;
+      margin: 1.5rem 0;
+      border-radius: 0.5rem;
+    }
+    
+    .prose a {
+      color: #3b82f6;
+      text-decoration: underline;
+    }
+    
+    .prose ul, .prose ol {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    
+    .prose blockquote {
+      border-left: 4px solid #3b82f6;
+      padding-left: 1rem;
+      margin-left: 0;
+      font-style: italic;
+      color: #4b5563;
+    }
+  </style>
 </body>
 </html>

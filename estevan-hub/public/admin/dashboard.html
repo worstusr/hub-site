@@ -8,165 +8,143 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 </head>
-<body class="bg-gray-100 min-h-screen">
-  <!-- Header -->
-  <header class="bg-white shadow-sm border-b p-4">
-    <div class="flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-blue-600">Dashboard Admin</h1>
-      <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-        <i data-lucide="log-out" class="w-4 h-4 inline mr-2"></i>Sair
-      </button>
-    </div>
-  </header>
-
-  <!-- Navigation -->
-  <nav class="bg-white shadow-sm p-4 mb-6">
-    <div class="flex gap-4">
-      <button class="nav-btn active" data-section="articles">
-        <i data-lucide="newspaper" class="w-4 h-4 inline mr-2"></i>Artigos
-      </button>
-      <button class="nav-btn" data-section="users">
-        <i data-lucide="users" class="w-4 h-4 inline mr-2"></i>Usuários
-      </button>
-    </div>
-  </nav>
-
-  <!-- Main Content -->
-  <main class="container mx-auto px-4">
-    <!-- Seção Artigos -->
-    <section id="section-articles" class="section">
-      <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-xl font-bold">Gerenciar Artigos</h2>
-          <button id="btnNewArticle" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>Novo Artigo
-          </button>
+<body class="bg-gradient-to-br from-night-950 via-night-900 to-lunar-950 min-h-screen text-white font-sans flex">
+  <!-- Sidebar -->
+  <aside id="sidebar" class="w-72 min-h-screen bg-gradient-to-b from-lunar-950 via-night-900 to-night-950 shadow-2xl border-r border-lunar-800/40 flex flex-col justify-between fixed md:static z-40 transition-all duration-300">
+    <div>
+      <!-- Logo dinâmica -->
+      <div class="flex items-center gap-4 px-8 py-8">
+        <div class="w-12 h-12 flex items-center justify-center rounded-2xl bg-gradient-to-tr from-lunar-400 to-lunar-600 shadow-lg animate-spin-slow">
+          <!-- SVG animado -->
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="#36baff" stroke-width="4" opacity="0.3"/>
+            <circle cx="16" cy="16" r="10" stroke="#0ca5f1" stroke-width="4" stroke-dasharray="60 40" stroke-linecap="round">
+              <animateTransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="16" cy="16" r="4" fill="#36baff"/>
+          </svg>
         </div>
-        <div id="articlesList" class="overflow-x-auto"></div>
+        <span class="text-2xl font-bold text-gradient tracking-tight select-none">Estevan Hub</span>
+      </div>
+      <!-- Navegação -->
+      <nav class="flex flex-col gap-2 mt-8 px-4">
+        <button class="nav-btn active flex items-center gap-3 px-5 py-3 rounded-xl font-semibold text-lunar-200 hover:text-lunar-400 transition-all duration-200 bg-night-800/60 hover:bg-lunar-600/10 border border-lunar-700/30 text-left" data-section="articles">
+          <i data-lucide="newspaper" class="w-5 h-5"></i>
+          Artigos
+        </button>
+        <button class="nav-btn flex items-center gap-3 px-5 py-3 rounded-xl font-semibold text-lunar-200 hover:text-lunar-400 transition-all duration-200 bg-night-800/60 hover:bg-lunar-600/10 border border-lunar-700/30 text-left" data-section="users">
+          <i data-lucide="users" class="w-5 h-5"></i>
+          Usuários
+        </button>
+      </nav>
+    </div>
+    <!-- Botão sair -->
+    <div class="px-8 py-8">
+      <button id="logoutBtn" class="w-full bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all duration-200 justify-center">
+        <i data-lucide="log-out" class="w-5 h-5"></i> Sair
+      </button>
+    </div>
+  </aside>
+
+  <!-- Conteúdo principal -->
+  <div class="flex-1 ml-0 md:ml-72 min-h-screen transition-all duration-300">
+    <!-- Métricas rápidas -->
+    <section class="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8 animate-on-scroll">
+      <div class="glass-card flex items-center gap-5 p-6 rounded-2xl shadow-lg border border-lunar-700/30 hover:scale-105 transition-transform duration-300">
+        <div class="bg-gradient-to-br from-lunar-400 to-lunar-600 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg">
+          <i data-lucide="activity" class="w-7 h-7 text-white"></i>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-lunar-300" id="metricArtigos">...</div>
+          <div class="text-lunar-200 text-sm">Artigos Publicados</div>
+        </div>
+      </div>
+      <div class="glass-card flex items-center gap-5 p-6 rounded-2xl shadow-lg border border-lunar-700/30 hover:scale-105 transition-transform duration-300">
+        <div class="bg-gradient-to-br from-green-400 to-green-600 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg">
+          <i data-lucide="users" class="w-7 h-7 text-white"></i>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-green-300" id="metricUsuarios">...</div>
+          <div class="text-lunar-200 text-sm">Usuários Ativos</div>
+        </div>
+      </div>
+      <div class="glass-card flex items-center gap-5 p-6 rounded-2xl shadow-lg border border-lunar-700/30 hover:scale-105 transition-transform duration-300">
+        <div class="bg-gradient-to-br from-purple-400 to-purple-600 w-14 h-14 rounded-xl flex items-center justify-center shadow-lg">
+          <i data-lucide="shield-check" class="w-7 h-7 text-white"></i>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-purple-300" id="metricConfianca">100%</div>
+          <div class="text-lunar-200 text-sm">Confiabilidade</div>
+        </div>
       </div>
     </section>
-
-    <!-- Seção Usuários -->
-    <section id="section-users" class="section hidden">
-      <div class="bg-white rounded-lg shadow p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-xl font-bold">Gerenciar Usuários</h2>
-          <button id="btnNewUser" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-            <i data-lucide="plus" class="w-4 h-4 inline mr-2"></i>Novo Usuário
-          </button>
+    <main class="container mx-auto px-4">
+      <!-- Seção Artigos -->
+      <section id="section-articles" class="section">
+        <div class="glass-card bg-night-900/80 rounded-3xl shadow-2xl border border-lunar-700/30 p-8">
+          <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <h2 class="text-3xl font-bold text-white flex items-center gap-3">
+              <i data-lucide="newspaper" class="w-7 h-7 text-lunar-400"></i>
+              Gerenciar Artigos
+            </h2>
+            <a href="/admin/crud-publicacao.html" class="bg-gradient-to-r from-lunar-500 to-lunar-600 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:from-lunar-400 hover:to-lunar-500 transition-all duration-200">
+              <i data-lucide="plus" class="w-5 h-5"></i>Novo Artigo
+            </a>
+          </div>
+          <div id="articlesList" class="overflow-x-auto"></div>
         </div>
-        <div id="usersList" class="overflow-x-auto"></div>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <!-- Modal Artigo -->
-  <div id="modalArticle" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-      <div class="p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-xl font-bold" id="modalArticleTitle">Novo Artigo</h3>
-          <button id="closeModalArticle" class="text-gray-400 hover:text-gray-600">
-            <i data-lucide="x" class="w-6 h-6"></i>
-          </button>
-        </div>
-        <form id="formArticle" class="space-y-4">
-          <input type="hidden" id="articleId">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block font-semibold mb-1">Título *</label>
-              <input type="text" id="articleTitle" class="w-full border rounded p-2" required>
-            </div>
-            <div>
-              <label class="block font-semibold mb-1">Slug (URL) *</label>
-              <input type="text" id="articleSlug" class="w-full border rounded p-2" required>
-            </div>
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Resumo</label>
-            <textarea id="articleSummary" class="w-full border rounded p-2" rows="2"></textarea>
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Conteúdo</label>
-            <textarea id="articleContent" class="w-full border rounded p-2" style="min-height: 300px;"></textarea>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block font-semibold mb-1">Categoria</label>
-              <input type="text" id="articleCategory" class="w-full border rounded p-2">
-            </div>
-            <div>
-              <label class="block font-semibold mb-1">Status</label>
-              <select id="articleStatus" class="w-full border rounded p-2">
-                <option value="publicado">Publicado</option>
-                <option value="rascunho">Rascunho</option>
-                <option value="removido">Removido</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Tags</label>
-            <input type="text" id="articleTags" class="w-full border rounded p-2">
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block font-semibold mb-1">Imagem de Destaque (URL)</label>
-              <input type="text" id="articleImage" class="w-full border rounded p-2">
-            </div>
-            <div>
-              <label class="block font-semibold mb-1">Thumbnail (URL)</label>
-              <input type="text" id="articleThumbnail" class="w-full border rounded p-2">
-            </div>
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Autor</label>
-            <input type="text" id="articleAuthor" class="w-full border rounded p-2" value="Equipe Estevan Hub">
-          </div>
-          <div class="flex gap-4 pt-4">
-            <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
-              Salvar Artigo
-            </button>
-            <button type="button" id="cancelModalArticle" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
-              Cancelar
+      <!-- Seção Usuários -->
+      <section id="section-users" class="section hidden">
+        <div class="glass-card bg-night-900/80 rounded-3xl shadow-2xl border border-lunar-700/30 p-8">
+          <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <h2 class="text-3xl font-bold text-white flex items-center gap-3">
+              <i data-lucide="users" class="w-7 h-7 text-lunar-400"></i>
+              Gerenciar Usuários
+            </h2>
+            <button id="btnNewUser" class="bg-gradient-to-r from-lunar-500 to-lunar-600 text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:from-lunar-400 hover:to-lunar-500 transition-all duration-200">
+              <i data-lucide="plus" class="w-5 h-5"></i>Novo Usuário
             </button>
           </div>
-        </form>
-      </div>
-    </div>
+          <div id="usersList" class="overflow-x-auto"></div>
+        </div>
+      </section>
+    </main>
   </div>
 
   <!-- Modal Usuário -->
-  <div id="modalUser" class="fixed inset-0 bg-black/50 hidden flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-lg w-full max-w-md">
-      <div class="p-6">
-        <div class="flex justify-between items-center mb-6">
-          <h3 class="text-xl font-bold" id="modalUserTitle">Novo Usuário</h3>
-          <button id="closeModalUser" class="text-gray-400 hover:text-gray-600">
-            <i data-lucide="x" class="w-6 h-6"></i>
+  <div id="modalUser" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center p-4 z-50">
+    <div class="glass-card bg-night-900/90 rounded-3xl w-full max-w-md border border-lunar-700/30 shadow-2xl">
+      <div class="p-8">
+        <div class="flex justify-between items-center mb-8">
+          <h3 class="text-2xl font-bold text-white" id="modalUserTitle">Novo Usuário</h3>
+          <button id="closeModalUser" class="text-lunar-400 hover:text-lunar-200">
+            <i data-lucide="x" class="w-7 h-7"></i>
           </button>
         </div>
-        <form id="formUser" class="space-y-4">
+        <form id="formUser" class="space-y-6">
           <input type="hidden" id="userId">
           <div>
-            <label class="block font-semibold mb-1">Usuário *</label>
-            <input type="text" id="userUsername" class="w-full border rounded p-2" required>
+            <label class="block font-semibold mb-1 text-lunar-200">Usuário *</label>
+            <input type="text" id="userUsername" class="w-full border border-lunar-700/30 rounded-xl p-3 bg-night-800/70 text-white focus:ring-2 focus:ring-lunar-400" required>
           </div>
           <div>
-            <label class="block font-semibold mb-1">Senha</label>
-            <input type="password" id="userPassword" class="w-full border rounded p-2">
+            <label class="block font-semibold mb-1 text-lunar-200">Senha</label>
+            <input type="password" id="userPassword" class="w-full border border-lunar-700/30 rounded-xl p-3 bg-night-800/70 text-white focus:ring-2 focus:ring-lunar-400">
           </div>
           <div>
-            <label class="block font-semibold mb-1">Status</label>
-            <select id="userActive" class="w-full border rounded p-2">
+            <label class="block font-semibold mb-1 text-lunar-200">Status</label>
+            <select id="userActive" class="w-full border border-lunar-700/30 rounded-xl p-3 bg-night-800/70 text-white focus:ring-2 focus:ring-lunar-400">
               <option value="1">Ativo</option>
               <option value="0">Inativo</option>
             </select>
           </div>
           <div class="flex gap-4 pt-4">
-            <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
+            <button type="submit" class="bg-gradient-to-r from-lunar-500 to-lunar-600 text-white px-6 py-3 rounded-xl font-bold hover:from-lunar-400 hover:to-lunar-500 transition-all duration-200">
               Salvar Usuário
             </button>
-            <button type="button" id="cancelModalUser" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
+            <button type="button" id="cancelModalUser" class="bg-night-800/60 text-lunar-300 px-6 py-3 rounded-xl font-bold hover:bg-lunar-700/30 hover:text-white transition-all duration-200">
               Cancelar
             </button>
           </div>
@@ -193,10 +171,7 @@
       });
     });
 
-    // CRUD ARTIGOS
-    let ckeditorInstance = null;
-    let currentArticleId = null;
-
+    // CRUD ARTIGOS - modified to use standalone page
     async function loadArticles() {
       const list = document.getElementById('articlesList');
       list.innerHTML = '<div class="text-center py-4">Carregando...</div>';
@@ -211,28 +186,28 @@
           return;
         }
         list.innerHTML = `
-          <table class="min-w-full text-sm">
-            <thead class="bg-gray-50">
+          <table class="min-w-full text-sm table-dark">
+            <thead class="bg-night-800/90">
               <tr>
-                <th class="text-left p-3 font-semibold">Título</th>
-                <th class="text-left p-3 font-semibold">Slug</th>
-                <th class="text-left p-3 font-semibold">Status</th>
-                <th class="text-left p-3 font-semibold">Ações</th>
+                <th class="text-left p-3 font-semibold text-blue-400">Título</th>
+                <th class="text-left p-3 font-semibold text-blue-400">Slug</th>
+                <th class="text-left p-3 font-semibold text-blue-400">Status</th>
+                <th class="text-left p-3 font-semibold text-blue-400">Ações</th>
               </tr>
             </thead>
             <tbody>
               ${articles.map(article => `
-                <tr class="border-t hover:bg-gray-50">
-                  <td class="p-3 font-medium">${article.titulo}</td>
-                  <td class="p-3 text-gray-600">${article.slug}</td>
+                <tr class="border-t border-night-700 hover:bg-night-800/60 transition">
+                  <td class="p-3 font-medium text-white">${article.titulo}</td>
+                  <td class="p-3 text-blue-300">${article.slug}</td>
                   <td class="p-3">
-                    <span class="px-2 py-1 rounded text-xs ${article.status === 'publicado' ? 'bg-green-100 text-green-800' : article.status === 'rascunho' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}">
+                    <span class="px-2 py-1 rounded text-xs ${article.status === 'publicado' ? 'bg-green-700/30 text-green-300' : article.status === 'rascunho' ? 'bg-yellow-700/30 text-yellow-200' : 'bg-red-700/30 text-red-300'}">
                       ${article.status}
                     </span>
                   </td>
                   <td class="p-3 space-x-2">
-                    <button onclick="editArticle(${article.id})" class="text-blue-600 hover:underline">Editar</button>
-                    <button onclick="deleteArticle(${article.id})" class="text-red-600 hover:underline">Excluir</button>
+                    <a href="/admin/crud-publicacao.html?id=${article.id}" class="text-blue-400 hover:underline font-bold">Editar</a>
+                    <button onclick="deleteArticle(${article.id})" class="text-red-400 hover:underline font-bold">Excluir</button>
                   </td>
                 </tr>
               `).join('')}
@@ -243,118 +218,6 @@
         list.innerHTML = '<div class="text-center py-8 text-red-500">Erro ao carregar artigos</div>';
       }
     }
-
-    function openArticleModal(article = null) {
-      const modal = document.getElementById('modalArticle');
-      const title = document.getElementById('modalArticleTitle');
-      const form = document.getElementById('formArticle');
-      form.reset();
-      currentArticleId = article?.id || null;
-      title.textContent = article ? 'Editar Artigo' : 'Novo Artigo';
-      if (article) {
-        document.getElementById('articleId').value = article.id;
-        document.getElementById('articleTitle').value = article.titulo || '';
-        document.getElementById('articleSlug').value = article.slug || '';
-        document.getElementById('articleSummary').value = article.resumo || '';
-        document.getElementById('articleContent').value = article.conteudo || '';
-        document.getElementById('articleCategory').value = article.categoria || '';
-        document.getElementById('articleTags').value = article.tags || '';
-        document.getElementById('articleStatus').value = article.status || 'publicado';
-        document.getElementById('articleImage').value = article.imagem_destaque || '';
-        document.getElementById('articleThumbnail').value = article.thumbnail || '';
-        document.getElementById('articleAuthor').value = article.autor || 'Equipe Estevan Hub';
-      } else {
-        document.getElementById('articleAuthor').value = 'Equipe Estevan Hub';
-        document.getElementById('articleStatus').value = 'publicado';
-      }
-      modal.classList.remove('hidden');
-      setTimeout(() => {
-        if (ckeditorInstance) {
-          ckeditorInstance.destroy().then(() => {
-            ClassicEditor.create(document.getElementById('articleContent')).then(editor => {
-              ckeditorInstance = editor;
-              if (article) editor.setData(article.conteudo || '');
-            });
-          });
-        } else {
-          ClassicEditor.create(document.getElementById('articleContent')).then(editor => {
-            ckeditorInstance = editor;
-            if (article) editor.setData(article.conteudo || '');
-          });
-        }
-      }, 100);
-      document.getElementById('articleTitle').focus();
-    }
-
-    function closeArticleModal() {
-      document.getElementById('modalArticle').classList.add('hidden');
-      if (ckeditorInstance) {
-        ckeditorInstance.destroy().then(() => { ckeditorInstance = null; });
-      }
-      currentArticleId = null;
-    }
-
-    document.getElementById('btnNewArticle').onclick = () => openArticleModal();
-    document.getElementById('closeModalArticle').onclick = closeArticleModal;
-    document.getElementById('cancelModalArticle').onclick = closeArticleModal;
-
-    document.getElementById('formArticle').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const submitBtn = this.querySelector('button[type="submit"]');
-      const originalText = submitBtn.innerHTML;
-      const titulo = document.getElementById('articleTitle').value.trim();
-      const slug = document.getElementById('articleSlug').value.trim();
-      if (!titulo) { alert('Título é obrigatório'); return; }
-      if (!slug) { alert('Slug é obrigatório'); return; }
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = 'Salvando...';
-      try {
-        const data = {
-          titulo,
-          slug,
-          resumo: document.getElementById('articleSummary').value.trim(),
-          conteudo: ckeditorInstance ? ckeditorInstance.getData() : document.getElementById('articleContent').value,
-          categoria: document.getElementById('articleCategory').value.trim(),
-          tags: document.getElementById('articleTags').value.trim(),
-          status: document.getElementById('articleStatus').value,
-          imagem_destaque: document.getElementById('articleImage').value.trim(),
-          thumbnail: document.getElementById('articleThumbnail').value.trim(),
-          autor: document.getElementById('articleAuthor').value.trim() || 'Equipe Estevan Hub'
-        };
-        const url = currentArticleId ? `/api/admin/publications/${currentArticleId}` : '/api/admin/publications';
-        const method = currentArticleId ? 'PUT' : 'POST';
-        const res = await fetch(url, {
-          method,
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify(data)
-        });
-        if (res.ok) {
-          closeArticleModal();
-          loadArticles();
-        } else {
-          const err = await res.json();
-          alert('Erro: ' + (err.error || 'Falha ao salvar artigo'));
-        }
-      } catch (error) {
-        alert('Erro: ' + error.message);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = originalText;
-      }
-    });
-
-    window.editArticle = async function(id) {
-      try {
-        const res = await fetch('/api/admin/publications', {
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        const articles = await res.json();
-        const article = articles.find(a => a.id == id);
-        if (article) openArticleModal(article);
-      } catch (error) {
-        alert('Erro ao carregar artigo');
-      }
-    };
 
     window.deleteArticle = async function(id) {
       if (!confirm('Excluir este artigo?')) return;
@@ -390,22 +253,22 @@
           return;
         }
         list.innerHTML = `
-          <table class="min-w-full text-sm">
-            <thead class="bg-gray-50">
+          <table class="min-w-full text-sm table-dark">
+            <thead class="bg-night-800/90">
               <tr>
-                <th class="text-left p-3 font-semibold">Usuário</th>
-                <th class="text-left p-3 font-semibold">Status</th>
-                <th class="text-left p-3 font-semibold">Ações</th>
+                <th class="text-left p-3 font-semibold text-blue-400">Usuário</th>
+                <th class="text-left p-3 font-semibold text-blue-400">Status</th>
+                <th class="text-left p-3 font-semibold text-blue-400">Ações</th>
               </tr>
             </thead>
             <tbody>
               ${users.map(user => `
-                <tr class="border-t hover:bg-gray-50">
-                  <td class="p-3 font-medium">${user.username}</td>
-                  <td class="p-3">${user.active ? 'Ativo' : 'Inativo'}</td>
+                <tr class="border-t border-night-700 hover:bg-night-800/60 transition">
+                  <td class="p-3 font-medium text-white">${user.username}</td>
+                  <td class="p-3">${user.active ? '<span class="text-green-300 font-bold">Ativo</span>' : '<span class="text-yellow-200 font-bold">Inativo</span>'}</td>
                   <td class="p-3 space-x-2">
-                    <button onclick="editUser(${user.id})" class="text-blue-600 hover:underline">Editar</button>
-                    <button onclick="deleteUser(${user.id})" class="text-red-600 hover:underline">Excluir</button>
+                    <button onclick="editUser(${user.id})" class="text-blue-400 hover:underline font-bold">Editar</button>
+                    <button onclick="deleteUser(${user.id})" class="text-red-400 hover:underline font-bold">Excluir</button>
                   </td>
                 </tr>
               `).join('')}
@@ -511,8 +374,245 @@
       }
     };
 
+    // Atualizar métricas rápidas
+    async function updateMetrics() {
+      try {
+        // Artigos
+        const resArtigos = await fetch('/api/admin/publications', { headers: { 'Authorization': 'Bearer ' + token } });
+        const artigos = await resArtigos.json();
+        document.getElementById('metricArtigos').textContent = Array.isArray(artigos) ? artigos.length : '0';
+        // Usuários
+        const resUsers = await fetch('/api/client/users', { headers: { 'Authorization': 'Bearer ' + token } });
+        const users = await resUsers.json();
+        document.getElementById('metricUsuarios').textContent = Array.isArray(users) ? users.length : '0';
+      } catch (e) {
+        document.getElementById('metricArtigos').textContent = '-';
+        document.getElementById('metricUsuarios').textContent = '-';
+      }
+    }
+    // Chamar ao abrir dashboard
+    updateMetrics();
+
     // Carregar artigos ao abrir dashboard
     loadArticles();
+
+    // Sidebar responsiva (colapsar em mobile)
+    function handleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      if (window.innerWidth < 768) {
+        sidebar.classList.add('fixed', 'left-0', 'top-0', 'h-full', 'z-50');
+        document.body.classList.add('pl-0');
+      } else {
+        sidebar.classList.remove('fixed', 'left-0', 'top-0', 'h-full', 'z-50');
+        document.body.classList.remove('pl-0');
+      }
+    }
+    window.addEventListener('resize', handleSidebar);
+    document.addEventListener('DOMContentLoaded', handleSidebar);
+
+    // Animação de entrada para métricas e cards
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        setTimeout(() => {
+          el.classList.add('visible');
+        }, 200);
+      });
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
   </script>
+
+  <style>
+    .text-gradient {
+      background: linear-gradient(90deg, #36baff, #0ca5f1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-card {
+      background: #141c2c !important;
+      border: 1px solid #1e293b !important;
+      box-shadow: 0 4px 24px 0 rgba(54,186,255,0.10);
+      transition: border 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    .glass-card:hover {
+      border-color: #2196f3 !important;
+      box-shadow: 0 8px 32px 0 rgba(54,186,255,0.18);
+    }
+    #sidebar {
+      background: linear-gradient(to bottom, #0f172a 0%, #162032 100%) !important;
+      border-right: 1px solid #1e293b !important;
+    }
+    #sidebar .text-gradient,
+    #sidebar .font-bold,
+    #sidebar .tracking-tight {
+      color: #e0f2fe !important;
+      background: none !important;
+      -webkit-text-fill-color: unset !important;
+    }
+    #sidebar .nav-btn,
+    #sidebar .nav-btn.active,
+    #sidebar .nav-btn:focus {
+      background: #1e2536 !important;
+      color: #e0f2fe !important;
+      border-color: #22304a !important;
+    }
+    #sidebar .nav-btn.active,
+    #sidebar .nav-btn:focus {
+      background: linear-gradient(90deg, #2196f3, #0ca5f1) !important;
+      color: #fff !important;
+      border-color: #2196f3 !important;
+    }
+    #sidebar .nav-btn:hover {
+      background: #22304a !important;
+      color: #bae6fd !important;
+    }
+    #sidebar .w-12.h-12,
+    #sidebar .w-12.h-12 svg {
+      background: #162032 !important;
+    }
+    #sidebar .w-12.h-12 {
+      border: 2px solid #22304a !important;
+    }
+    #sidebar .w-12.h-12 svg circle[fill="#36baff"] {
+      fill: #2196f3 !important;
+    }
+    #sidebar .w-12.h-12 svg circle[stroke="#36baff"] {
+      stroke: #2196f3 !important;
+    }
+    #sidebar .w-12.h-12 svg circle[stroke="#0ca5f1"] {
+      stroke: #0ca5f1 !important;
+    }
+    #sidebar .w-12.h-12 svg circle[fill="#36baff"] {
+      fill: #2196f3 !important;
+    }
+    #sidebar .select-none {
+      color: #e0f2fe !important;
+    }
+    #sidebar button,
+    #sidebar .nav-btn {
+      color: #e0f2fe !important;
+    }
+    #sidebar button#logoutBtn {
+      background: #1e2536 !important;
+      color: #fff !important;
+      border: 1px solid #22304a !important;
+    }
+    #sidebar button#logoutBtn:hover {
+      background: #ef4444 !important;
+      color: #fff !important;
+      border-color: #ef4444 !important;
+    }
+    /* Métricas */
+    #metricArtigos, #metricUsuarios, #metricConfianca {
+      color: #e0f2fe !important;
+      text-shadow: 0 2px 8px #0ca5f1cc;
+    }
+    .text-lunar-200, .text-lunar-300, .text-lunar-400, .text-lunar-100 {
+      color: #bae6fd !important;
+    }
+    .text-lunar-400 {
+      color: #60a5fa !important;
+    }
+    .text-lunar-300 {
+      color: #38bdf8 !important;
+    }
+    .text-lunar-200 {
+      color: #bae6fd !important;
+    }
+    .text-lunar-100 {
+      color: #e0f2fe !important;
+    }
+    /* Botões */
+    .bg-gradient-to-r.from-lunar-500.to-lunar-600,
+    .bg-gradient-to-r.from-lunar-400.to-lunar-600 {
+      background: linear-gradient(90deg, #2196f3, #0ca5f1) !important;
+      color: #fff !important;
+    }
+    .bg-gradient-to-r.from-lunar-500.to-lunar-600:hover,
+    .bg-gradient-to-r.from-lunar-400.to-lunar-600:hover {
+      background: linear-gradient(90deg, #36baff, #2196f3) !important;
+      color: #fff !important;
+    }
+    /* Responsivo */
+    @media (max-width: 900px) {
+      .max-w-7xl, .container {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+      }
+      .glass-card {
+        padding: 1rem !important;
+      }
+    }
+    @media (max-width: 600px) {
+      .flex, .grid {
+        flex-direction: column !important;
+        gap: 1rem !important;
+      }
+      .glass-card {
+        border-radius: 1rem !important;
+      }
+      .section {
+        padding: 0 !important;
+      }
+    }
+    /* Sidebar responsiva */
+    .animate-spin-slow {
+      animation: spin 3s linear infinite;
+    }
+    @keyframes spin {
+      100% { transform: rotate(360deg);}
+    }
+    @media (max-width: 1024px) {
+      #sidebar {
+        width: 64px !important;
+        min-width: 64px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      #sidebar .text-2xl,
+      #sidebar .text-gradient,
+      #sidebar .tracking-tight,
+      #sidebar .font-bold,
+      #sidebar .px-8,
+      #sidebar .py-8,
+      #sidebar .nav-btn span,
+      #sidebar .nav-btn .text-lunar-200,
+      #sidebar .nav-btn .text-lunar-400 {
+        display: none !important;
+      }
+      #sidebar nav {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .ml-72 {
+        margin-left: 64px !important;
+      }
+    }
+    @media (max-width: 768px) {
+      #sidebar {
+        position: fixed !important;
+        left: 0; top: 0; height: 100vh;
+        z-index: 50;
+        width: 100vw !important;
+        min-width: 0 !important;
+        background: #0f172a !important;
+        border-right: none !important;
+        box-shadow: 0 8px 32px 0 rgba(54,186,255,0.18);
+      }
+      .ml-72 {
+        margin-left: 0 !important;
+      }
+    }
+    /* Animação de entrada */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </body>
 </html>

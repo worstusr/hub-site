@@ -43,6 +43,13 @@ CREATE TABLE publications (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+ALTER TABLE publications
+  MODIFY COLUMN thumbnail VARCHAR(255) NULL,
+  MODIFY COLUMN imagem_destaque VARCHAR(255) NULL,
+  MODIFY COLUMN tags VARCHAR(255) NULL,
+  MODIFY COLUMN status VARCHAR(32) DEFAULT 'publicado',
+  MODIFY COLUMN data_publicacao DATETIME DEFAULT CURRENT_TIMESTAMP;
+
 -- Dados iniciais
 INSERT INTO admin_users (username, password_hash, full_name, email) VALUES 
 ('admin', SHA2('admin123', 256), 'Administrador', 'admin@estevanhub.com.br');

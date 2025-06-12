@@ -28,7 +28,7 @@
     }
   </script>
 </head>
-<body class="bg-night-100 min-h-screen text-night-900">
+<body class="bg-gradient-to-br from-night-950 via-night-900 to-lunar-950 text-white min-h-screen">
   <!-- Header igual à index -->
   <header class="bg-night-900/80 backdrop-blur-xl shadow-2xl border-b border-lunar-800/50 sticky top-0 z-50">
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,9 +40,18 @@
           <span class="ml-3 text-3xl font-bold text-gradient">Estevan Hub</span>
         </a>
         <div class="hidden md:flex space-x-8 items-center">
-          <a href="/#simulador" class="text-lunar-200 hover:text-lunar-400 transition-all duration-300">Simulador</a>
-          <a href="/#servicos" class="text-lunar-200 hover:text-lunar-400 transition-all duration-300">Serviços</a>
-          <a href="/#portfolio" class="text-lunar-200 hover:text-lunar-400 transition-all duration-300">Portfolio</a>
+          <a href="/#simulador" class="text-lunar-200 hover:text-lunar-400 transition-all duration-300 relative group">
+            Simulador
+            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-lunar-400 group-hover:w-full transition-all duration-300"></span>
+          </a>
+          <a href="/#servicos" class="text-lunar-200 hover:text-lunar-400 transition-all duration-300 relative group">
+            Serviços
+            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-lunar-400 group-hover:w-full transition-all duration-300"></span>
+          </a>
+          <a href="/#portfolio" class="text-lunar-200 hover:text-lunar-400 transition-all duration-300 relative group">
+            Portfolio
+            <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-lunar-400 group-hover:w-full transition-all duration-300"></span>
+          </a>
           <a href="/#contato" class="btn-primary text-white px-6 py-3 rounded-full">
             <i data-lucide="send" class="w-4 h-4 inline mr-2"></i>
             Contato
@@ -52,10 +61,15 @@
     </nav>
   </header>
 
-  <!-- Conteúdo do artigo -->
-  <main class="py-16 bg-white">
-    <div class="max-w-3xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-      <article id="articleContainer" class="rounded-3xl shadow-xl bg-white">
+  <!-- Conteúdo do artigo com design aprimorado -->
+  <main class="py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Card do artigo -->
+      <article id="articleContainer" class="rounded-3xl shadow-2xl overflow-hidden bg-night-800/40 backdrop-blur-xl border border-lunar-700/30 relative">
+        <!-- Botão flutuante voltar -->
+        <a href="/" class="absolute top-6 left-6 z-10 bg-lunar-600/80 hover:bg-lunar-500/90 text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 transition-all duration-200 backdrop-blur-sm">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Voltar
+        </a>
         <!-- Carregando... -->
         <div class="text-center p-20">
           <div class="inline-block animate-spin mb-6">
@@ -65,10 +79,58 @@
         </div>
       </article>
 
+      <!-- Botões de compartilhamento -->
+      <div class="share-buttons mt-6 flex gap-4 items-center justify-center">
+        <span class="text-lunar-300 font-medium">Compartilhar:</span>
+        <a href="#" id="shareFacebook" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
+          <i data-lucide="facebook" class="w-4 h-4"></i> Facebook
+        </a>
+        <a href="#" id="shareWhatsApp" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
+          <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
+        </a>
+        <a href="#" id="shareTwitter" class="bg-blue-400 hover:bg-blue-500 text-white px-4 py-2 rounded-full flex items-center gap-2 transition-colors">
+          <i data-lucide="twitter" class="w-4 h-4"></i> Twitter
+        </a>
+      </div>
+
+      <!-- Área de comentários/mensagem - NOVA -->
+      <div class="mt-10 bg-night-800/40 rounded-3xl border border-lunar-700/30 backdrop-blur-xl p-6 shadow-xl">
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <i data-lucide="message-square" class="w-5 h-5 text-lunar-400"></i>
+          Deixe seu comentário
+        </h3>
+        <form id="commentForm" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-lunar-200 mb-2 text-sm">Nome</label>
+              <input type="text" id="commentName" class="w-full bg-night-900/60 border border-lunar-700/50 rounded-xl p-3 text-white" placeholder="Seu nome" required>
+            </div>
+            <div>
+              <label class="block text-lunar-200 mb-2 text-sm">Email</label>
+              <input type="email" id="commentEmail" class="w-full bg-night-900/60 border border-lunar-700/50 rounded-xl p-3 text-white" placeholder="Seu email" required>
+            </div>
+          </div>
+          <div>
+            <label class="block text-lunar-200 mb-2 text-sm">Mensagem</label>
+            <textarea id="commentText" rows="4" class="w-full bg-night-900/60 border border-lunar-700/50 rounded-xl p-3 text-white resize-none" placeholder="Compartilhe seus pensamentos sobre este artigo" required></textarea>
+          </div>
+          <div>
+            <button type="submit" class="btn-primary px-6 py-3 rounded-xl font-medium flex items-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              Enviar comentário
+            </button>
+          </div>
+        </form>
+        <!-- Área onde aparecem os comentários existentes -->
+        <div class="mt-8" id="commentsContainer">
+          <!-- Comentários carregados dinamicamente -->
+        </div>
+      </div>
+
       <!-- Artigos relacionados -->
-      <section class="mt-20">
-        <h3 class="text-2xl font-bold text-night-900 mb-8 flex items-center">
-          <i data-lucide="book-open" class="w-6 h-6 text-lunar-400 mr-3"></i>
+      <section class="mt-16">
+        <h3 class="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+          <i data-lucide="book-open" class="w-6 h-6 text-lunar-400"></i>
           Artigos Relacionados
         </h3>
         <div id="relatedArticles" class="grid md:grid-cols-3 gap-8"></div>
@@ -77,10 +139,10 @@
   </main>
 
   <!-- Footer igual à index -->
-  <footer class="bg-night-900/70 border-t border-lunar-800/20 py-12 mt-20">
-    <div class="container mx-auto px-4">
+  <footer class="bg-night-950 border-t border-lunar-800/30 py-12 mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <p class="text-lunar-400">&copy; 2024 Estevan Hub. Todos os direitos reservados.</p>
+        <p class="text-lunar-400">&copy; 2025 Estevan Hub. Transformando ideias em soluções digitais.</p>
       </div>
     </div>
   </footer>
@@ -88,6 +150,24 @@
   <script>
     // Pega o slug da URL
     const slug = window.location.pathname.split('/').pop();
+
+    // Helper function to normalize image paths
+    function normalizeImagePath(path) {
+      if (!path) return '';
+      
+      // Handle absolute URLs
+      if (path.startsWith('http://') || path.startsWith('https://')) {
+        return path;
+      }
+      
+      // Handle relative URLs
+      if (path.startsWith('/')) {
+        return path;
+      }
+      
+      // Add leading slash to other paths
+      return '/' + path;
+    }
 
     // Carrega o artigo
     async function loadArticle() {
@@ -101,9 +181,9 @@
       } catch (error) {
         document.getElementById('articleContainer').innerHTML = `
           <div class="text-center p-20">
-            <i data-lucide="file-question" class="w-16 h-16 text-lunar-600 mx-auto mb-6"></i>
-            <h2 class="text-2xl font-bold text-night-900 mb-4">Artigo não encontrado</h2>
-            <p class="text-lunar-400 mb-8">O artigo que você está procurando não está disponível.</p>
+            <i data-lucide="file-question" class="w-16 h-16 text-lunar-400 mx-auto mb-6"></i>
+            <h2 class="text-2xl font-bold text-white mb-4">Artigo não encontrado</h2>
+            <p class="text-lunar-200 mb-8">O artigo que você está procurando não está disponível.</p>
             <a href="/" class="btn-primary text-white px-6 py-3 rounded-xl">
               <i data-lucide="home" class="w-4 h-4 inline mr-2"></i>
               Voltar à página inicial
@@ -116,39 +196,59 @@
 
     // Renderiza o artigo
     function renderArticle(article) {
-      let thumb = article.thumbnail
-        ? `<img src="/uploads/${article.thumbnail}" alt="${article.titulo}" class="w-full h-64 object-cover rounded-t-3xl mb-6">`
-        : (article.imagem_destaque
-            ? `<img src="${article.imagem_destaque}" alt="${article.titulo}" class="w-full h-64 object-cover rounded-t-3xl mb-6">`
-            : '');
+      let thumbnailHtml = '';
+      
+      // Handle feature image
+      if (article.thumbnail) {
+        thumbnailHtml = `<div class="w-full h-80 relative overflow-hidden">
+          <img src="${normalizeImagePath(article.thumbnail)}" alt="${article.titulo}" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-night-900 via-transparent to-transparent"></div>
+        </div>`;
+      } else if (article.imagem_destaque) {
+        thumbnailHtml = `<div class="w-full h-80 relative overflow-hidden">
+          <img src="${normalizeImagePath(article.imagem_destaque)}" alt="${article.titulo}" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-night-900 via-transparent to-transparent"></div>
+        </div>`;
+      }
 
       const html = `
-        ${thumb}
-        <div class="px-6 pt-2 pb-8">
-          <div class="flex items-center gap-3 mb-4">
-            <div>
-              <div class="font-bold text-lunar-400 text-sm uppercase">${article.categoria || ''}</div>
-              <div class="text-xs text-lunar-400">${article.data_formatada || ''}</div>
+        ${thumbnailHtml}
+        <div class="p-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="bg-lunar-600/20 px-3 py-1 rounded-full border border-lunar-600/30 text-lunar-300 text-xs">
+              ${article.categoria || 'Geral'}
             </div>
+            <div class="text-xs text-lunar-400">${article.data_formatada || ''}</div>
           </div>
-          <h1 class="text-4xl font-bold text-night-900 mb-4">${article.titulo}</h1>
-          <div class="flex flex-wrap gap-6 mb-8 text-sm text-night-700">
+          <h1 class="text-4xl font-extrabold text-white mb-6 leading-tight">${article.titulo}</h1>
+          <div class="flex flex-wrap gap-6 mb-8 text-sm text-lunar-300">
             <span class="flex items-center gap-2">
               <i data-lucide="user" class="w-4 h-4 text-lunar-400"></i>
               ${article.autor || 'Equipe Estevan Hub'}
             </span>
             <span class="flex items-center gap-2">
-              <i data-lucide="tag" class="w-4 h-4 text-lunar-400"></i>
-              ${article.categoria || ''}
+              <i data-lucide="calendar" class="w-4 h-4 text-lunar-400"></i>
+              ${article.data_formatada || ''}
             </span>
           </div>
-          <div class="prose prose-lg max-w-none text-night-900 article-content">
+          <div class="prose prose-lg max-w-none text-lunar-100 article-content prose-headings:text-white prose-a:text-lunar-400 prose-a:no-underline hover:prose-a:text-lunar-300 prose-blockquote:border-lunar-400 prose-blockquote:bg-night-700/50 prose-blockquote:rounded-lg">
             ${article.conteudo || article.resumo || ''}
           </div>
         </div>
       `;
+      
       document.getElementById('articleContainer').innerHTML = html;
       if (typeof lucide !== 'undefined') lucide.createIcons();
+      
+      // Fix any remaining image paths in the content
+      setTimeout(() => {
+        const imgElements = document.querySelectorAll('.article-content img');
+        imgElements.forEach(img => {
+          if (img.src && !img.src.startsWith('http')) {
+            img.src = normalizeImagePath(img.getAttribute('src'));
+          }
+        });
+      }, 100);
     }
 
     // Carrega artigos relacionados
@@ -156,7 +256,7 @@
       try {
         const response = await fetch('/api/publications');
         if (!response.ok) throw new Error('Erro ao carregar artigos relacionados');
-        const articles = await response.json();
+        let articles = await response.json();
         let relatedArticles = articles.filter(a => a.categoria === categoria && a.slug !== slug).slice(0, 3);
         if (relatedArticles.length === 0) {
           relatedArticles = articles.filter(a => a.slug !== slug).slice(0, 3);
@@ -171,7 +271,7 @@
       }
     }
 
-    // Renderiza artigos relacionados
+    // Renderiza artigos relacionados com thumbnails corrigidas
     function renderRelatedArticles(articles) {
       if (articles.length === 0) {
         document.getElementById('relatedArticles').innerHTML = `
@@ -181,10 +281,19 @@
         `;
         return;
       }
+
       const html = articles.map(article => {
+        // Preparar o thumbnail com normalização de caminho
+        const thumbnailUrl = normalizeImagePath(article.thumbnail || article.imagem_destaque);
+        const thumbnailHtml = thumbnailUrl ? 
+          `<div class="mb-4 overflow-hidden rounded-xl">
+            <img src="${thumbnailUrl}" alt="${article.titulo}" 
+              class="w-full h-48 object-cover transform transition-transform duration-300 group-hover:scale-105">
+          </div>` : '';
+
         return `
           <div class="bg-night-800/80 p-6 rounded-2xl border border-lunar-700/50 group hover:border-lunar-400/70 transition-all duration-300 shadow-lg flex flex-col h-full">
-            ${article.thumbnail ? `<img src="/uploads/${article.thumbnail}" class="w-full h-32 object-cover rounded-xl mb-4" />` : ''}
+            ${thumbnailHtml}
             <div class="flex items-center gap-3 mb-3">
               <div class="text-xs text-lunar-400">${article.data_formatada || ''}</div>
             </div>
@@ -198,72 +307,129 @@
           </div>
         `;
       }).join('');
+      
       document.getElementById('relatedArticles').innerHTML = html;
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
+    // Configuração do formulário de comentários
+    document.getElementById('commentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('commentName').value;
+      const email = document.getElementById('commentEmail').value;
+      const text = document.getElementById('commentText').value;
+      
+      // Aqui viria a chamada para API para salvar o comentário
+      // Por enquanto, apenas simular uma confirmação
+      alert(`Obrigado ${name}! Seu comentário foi enviado para aprovação.`);
+      this.reset();
+    });
+
+    // Compartilhamento
+    document.getElementById('shareFacebook').addEventListener('click', function(e) {
+      e.preventDefault();
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400');
+    });
+
+    document.getElementById('shareWhatsApp').addEventListener('click', function(e) {
+      e.preventDefault();
+      const url = encodeURIComponent(window.location.href);
+      window.open(`https://wa.me/?text=${url}`, '_blank');
+    });
+
+    document.getElementById('shareTwitter').addEventListener('click', function(e) {
+      e.preventDefault();
+      const url = encodeURIComponent(window.location.href);
+      const title = encodeURIComponent(document.title);
+      window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`, '_blank', 'width=600,height=400');
+    });
+
     document.addEventListener('DOMContentLoaded', loadArticle);
   </script>
   <style>
-    body {
-      background: #f8fafc;
-      color: #222;
+    .text-gradient {
+      background: linear-gradient(90deg, #36baff, #0ca5f1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #0ca5f1, #0284ce);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #36baff, #0ca5f1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(54, 186, 255, 0.4);
+    }
+
+    .article-content {
+      font-size: 1.15rem;
+      line-height: 1.8;
+    }
+
     .article-content h1, .article-content h2, .article-content h3, .article-content h4 {
-      color: #0c4a6e;
+      color: #fff;
       font-weight: bold;
-      margin-top: 2rem;
+      margin-top: 2.2rem;
       margin-bottom: 1rem;
+      line-height: 1.2;
     }
+
+    .article-content h1 { font-size: 2.5rem; }
+    .article-content h2 { font-size: 2rem; }
+    .article-content h3 { font-size: 1.5rem; }
+    .article-content h4 { font-size: 1.2rem; }
+
     .article-content p {
       margin-bottom: 1.5rem;
     }
+
     .article-content a {
-      color: #0ca5f1;
-      text-decoration: underline;
-    }
-    .prose img, .article-content img {
-      border-radius: 1rem;
-      margin: 2rem auto;
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
-    @media (max-width: 900px) {
-      .max-w-3xl {
-        max-width: 100vw !important;
-      }
-      .rounded-3xl {
-        border-radius: 0 !important;
-      }
-      .px-6 {
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-      }
-    }
-    #relatedArticles .bg-night-800\/80 {
-      background: rgba(30,41,59,0.85) !important;
-      border: 1px solid #334155 !important;
-      box-shadow: 0 4px 24px 0 rgba(54,186,255,0.10);
-      transition: border 0.2s;
-    }
-    #relatedArticles .group:hover {
-      border-color: #36baff !important;
-    }
-    #relatedArticles h5 a {
-      color: #fff;
+      color: #36baff;
       text-decoration: none;
       transition: color 0.2s;
     }
-    #relatedArticles h5 a:hover {
-      color: #36baff;
-      text-decoration: underline;
+
+    .article-content a:hover {
+      color: #7cd0ff;
     }
-    #relatedArticles .text-lunar-400 {
-      color: #36baff !important;
+
+    .article-content ul, .article-content ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1.5rem;
     }
-    #relatedArticles .text-lunar-200 {
-      color: #bae3ff !important;
+
+    .article-content blockquote {
+      border-left: 4px solid #36baff;
+      background: rgba(54, 186, 255, 0.1);
+      padding: 1rem 1.5rem;
+      margin: 2rem 0;
+      border-radius: 0.5rem;
+    }
+
+    .article-content code {
+      background: rgba(15, 23, 42, 0.6);
+      color: #bae3ff;
+      padding: 0.2em 0.4em;
+      border-radius: 0.3em;
+      font-size: 0.95em;
+    }
+
+    .article-content img {
+      max-width: 100%;
+      border-radius: 1rem;
+      margin: 2rem 0;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .grid-cols-3 {
+        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+      }
     }
   </style>
 </body>
